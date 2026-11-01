@@ -1,349 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ms">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0f172a">
-  <title>Portal SK Kimanis</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <style>
-    :root { --navy:#020617; --panel:#0f172a; --line:#1e293b; --gold:#facc15; }
-    * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { margin:0; min-height:100vh; background:var(--navy); color:#f1f5f9; font-family:"Plus Jakarta Sans",sans-serif; }
-    .material-symbols-outlined { font-variation-settings:"FILL" 0,"wght" 500,"GRAD" 0,"opsz" 24; }
-    .site-header { position:sticky; top:0; z-index:50; background:rgba(15,23,42,.94); backdrop-filter:blur(16px); border-bottom:1px solid var(--line); }
-    .header-inner { max-width:1280px; margin:auto; min-height:72px; padding:10px 20px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
-    .brand { display:flex; align-items:center; gap:12px; min-width:0; }
-    .brand img { width:48px; height:48px; object-fit:contain; }
-    .brand-title { font-size:16px; font-weight:800; letter-spacing:.04em; line-height:1.2; }
-    .brand-subtitle { margin-top:4px; font-size:12px; color:#94a3b8; }
-    .desktop-nav { display:none; align-items:center; gap:6px; }
-    .desktop-nav a { display:flex; align-items:center; gap:8px; padding:11px 13px; color:#cbd5e1; border-radius:12px; text-decoration:none; font-size:13px; font-weight:700; transition:.2s; }
-    .desktop-nav a:hover,.desktop-nav a.active { background:rgba(250,204,21,.12); color:var(--gold); }
-    .status-pill { display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border-radius:999px; background:var(--gold); color:#020617; font-size:11px; font-weight:800; }
-    .status-dot { width:7px; height:7px; background:#020617; border-radius:50%; animation:pulse 1.8s infinite; }
-    @keyframes pulse { 50% { opacity:.35; } }
-    main { width:100%; padding:18px 16px 100px; }
-    .page-wrap { width:100%; max-width:1200px; margin:0 auto; display:flex; flex-direction:column; gap:20px; }
-    .hero { position:relative; height:220px; overflow:hidden; border:1px solid #334155; border-radius:22px; background:var(--panel); box-shadow:0 18px 40px rgba(0,0,0,.25); }
-    .slides,.slide { position:absolute; inset:0; }
-    .slide { opacity:0; pointer-events:none; transition:opacity .7s ease; }
-    .slide.active { opacity:1; pointer-events:auto; }
-    .slide img { width:100%; height:100%; object-fit:cover; transform:scale(1); transition:transform 4s ease; }
-    .slide.active img { transform:scale(1.06); }
-    .hero-shade { position:absolute; inset:0; background:linear-gradient(to top,rgba(2,6,23,.92),rgba(2,6,23,.2) 55%,transparent); }
-    .slide-caption { position:absolute; left:16px; bottom:16px; z-index:3; display:inline-flex; align-items:center; gap:8px; max-width:70%; padding:8px 12px; border:1px solid rgba(250,204,21,.4); border-radius:999px; background:rgba(2,6,23,.82); font-size:12px; font-weight:700; }
-    .caption-dot { width:8px; height:8px; flex-shrink:0; border-radius:50%; background:var(--gold); }
-    .hero-btn { position:absolute; top:50%; z-index:5; transform:translateY(-50%); width:38px; height:38px; display:grid; place-items:center; color:white; background:rgba(15,23,42,.8); border:1px solid #ffffff40; border-radius:50%; cursor:pointer; }
-    .hero-btn:hover { color:#020617; background:var(--gold); }
-    .hero-prev { left:12px; } .hero-next { right:12px; }
-    .dots { position:absolute; z-index:5; right:14px; bottom:16px; display:flex; gap:6px; align-items:center; padding:8px 10px; background:rgba(2,6,23,.78); border:1px solid #334155; border-radius:999px; }
-    .dot { width:8px; height:8px; padding:0; border:0; border-radius:99px; background:#64748b; cursor:pointer; transition:.25s; }
-    .dot.active { width:24px; background:var(--gold); }
-    .progress-track { position:absolute; z-index:6; top:0; left:0; right:0; height:3px; background:#ffffff20; }
-    .progress-bar { width:0; height:100%; background:var(--gold); }
-    .info-grid { display:grid; grid-template-columns:1fr; gap:16px; }
-    .panel { padding:18px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(145deg,#0f172a,#080f20); box-shadow:0 10px 25px #00000020; }
-    .panel-heading { display:flex; align-items:center; justify-content:space-between; gap:14px; padding-bottom:13px; border-bottom:1px solid #1e293b; }
-    .heading-icon { width:38px; height:38px; display:grid; place-items:center; color:var(--gold); background:#facc1518; border:1px solid #facc1540; border-radius:50%; }
-    .eyebrow { color:#facc15; font-size:10px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
-    .clock { margin-top:3px; color:#fff; font-size:25px; font-weight:800; letter-spacing:-.04em; font-variant-numeric:tabular-nums; }
-    .clock-zone { color:var(--gold); font-size:11px; font-weight:800; }
-    .session-pill { display:inline-flex; padding:6px 10px; border:1px solid #facc1540; border-radius:999px; color:var(--gold); background:#facc1510; font-size:11px; font-weight:800; }
-    .date-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding-top:14px; }
-    .date-block { display:flex; align-items:center; gap:12px; min-width:0; }
-    .date-box { display:flex; flex-direction:column; align-items:center; justify-content:center; width:42px; height:46px; flex-shrink:0; border:1px solid #334155; border-radius:12px; background:#1e293b; }
-    .date-box span:first-child { color:var(--gold); font-size:9px; font-weight:800; }
-    .date-box span:last-child { color:white; font-size:17px; font-weight:800; }
-    .date-title { font-size:13px; font-weight:700; }
-    .date-note { margin-top:4px; color:#94a3b8; font-size:11px; }
-    .quote-card { display:flex; align-items:flex-start; gap:14px; }
-    .leader-photo { width:52px; height:52px; flex-shrink:0; object-fit:cover; object-position:top; border:2px solid var(--gold); border-radius:50%; }
-    .quote-title { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:13px; font-weight:800; }
-    .quote-tag { padding:4px 8px; border:1px solid #facc1540; border-radius:7px; color:var(--gold); background:#facc1515; font-size:10px; }
-    .quote-text { margin:7px 0 0; color:#cbd5e1; font-size:12px; font-style:italic; line-height:1.7; }
-    .calendar-link { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border:1px solid #facc1540; border-radius:16px; background:#0f172a; text-decoration:none; color:white; }
-    .calendar-link:hover { border-color:var(--gold); }
-    .calendar-left { display:flex; align-items:center; gap:12px; min-width:0; }
-    .calendar-icon { width:42px; height:42px; display:grid; place-items:center; flex-shrink:0; color:var(--gold); background:#facc1518; border:1px solid #facc1540; border-radius:12px; }
-    .calendar-title { font-size:13px; font-weight:800; }
-    .calendar-sub { margin-top:4px; color:#94a3b8; font-size:11px; }
-    .open-label { display:flex; align-items:center; gap:5px; padding:8px 10px; border:1px solid #facc1530; border-radius:10px; color:var(--gold); font-size:11px; font-weight:800; }
-    .section-title { display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .section-title h2 { display:flex; align-items:center; gap:9px; margin:0; font-size:16px; font-weight:800; }
-    .section-title h2 .material-symbols-outlined { color:var(--gold); }
-    .section-tag { padding:5px 9px; border:1px solid #facc1540; border-radius:999px; color:var(--gold); background:#facc1510; font-size:10px; font-weight:800; }
-    .menu-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-    .menu-card { min-height:145px; display:flex; flex-direction:column; justify-content:space-between; padding:16px; border:1px solid var(--line); border-radius:18px; background:#0f172ae8; color:white; text-decoration:none; transition:transform .2s,border-color .2s; }
-    .menu-card:hover { transform:translateY(-3px); border-color:#facc1580; }
-    .menu-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
-    .menu-icon { width:42px; height:42px; display:grid; place-items:center; border:1px solid #ffffff15; border-radius:13px; background:#ffffff0b; }
-    .menu-icon .material-symbols-outlined { font-size:23px; }
-    .menu-arrow { color:#64748b; font-size:20px; }
-    .menu-name { margin-top:14px; font-size:14px; font-weight:800; line-height:1.35; }
-    .menu-desc { margin-top:4px; color:#94a3b8; font-size:11px; }
-    .blue { color:#60a5fa; } .green { color:#34d399; } .amber { color:#fbbf24; } .rose { color:#fb7185; }
-    .bottom-nav { position:fixed; z-index:60; left:0; right:0; bottom:0; padding-bottom:env(safe-area-inset-bottom,0); background:rgba(15,23,42,.96); border-top:1px solid var(--line); backdrop-filter:blur(16px); }
-    .bottom-inner { max-width:600px; height:64px; margin:auto; padding:0 8px; display:flex; justify-content:space-around; align-items:center; }
-    .bottom-nav a { min-width:0; display:flex; flex:1; flex-direction:column; align-items:center; justify-content:center; gap:3px; height:54px; color:#94a3b8; text-decoration:none; font-size:10px; font-weight:700; }
-    .bottom-nav a .material-symbols-outlined { font-size:22px; }
-    .bottom-nav a.active { color:var(--gold); }
-    .footer { padding:4px 0 12px; text-align:center; color:#64748b; font-size:11px; }
-    @media (min-width:640px) {
-      main { padding:24px 24px 36px; }
-      .page-wrap { gap:24px; }
-      .hero { height:300px; }
-      .info-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .menu-grid { gap:16px; }
-      .menu-card { min-height:165px; padding:20px; }
-    }
-    @media (min-width:768px) {
-      .desktop-nav { display:flex; }
-      .bottom-nav { display:none; }
-      main { padding-bottom:40px; }
-      .hero { height:350px; }
-      .page-wrap { gap:24px; }
-      .menu-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
-    }
-    @media (min-width:1024px) {
-      .header-inner { padding-left:32px; padding-right:32px; }
-      main { padding:28px 32px 48px; }
-      .hero { height:420px; }
-      .info-grid { grid-template-columns:1.15fr .85fr; }
-      .menu-card { min-height:175px; }
-    }
-    @media (max-width:380px) {
-      main { padding-left:12px; padding-right:12px; }
-      .header-inner { padding-left:12px; padding-right:12px; }
-      .brand img { width:40px; height:40px; }
-      .brand-title { font-size:14px; }
-      .brand-subtitle { font-size:10px; }
-      .status-pill { padding:6px 9px; }
-      .hero { height:195px; }
-      .panel { padding:14px; }
-      .menu-card { padding:12px; min-height:135px; }
-      .menu-name { font-size:13px; }
-    }
-    @media (prefers-reduced-motion:reduce) {
-      *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; transition-duration:.01ms!important; }
-    }
-  </style>
-</head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#020617"><title>Portal SK Kimanis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020617;--panel:#0f172a;--line:#263449;--yellow:#facc15;--muted:#94a3b8;--blue:#38bdf8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f8fafc;font-family:"Plus Jakarta Sans",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}.wrap{width:min(1180px,100% - 32px);margin:auto}.top{position:sticky;top:0;z-index:20;background:#0f172aeF;backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.topin{height:76px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;object-fit:contain}.brand b{display:block;font-size:16px}.brand small{color:var(--muted);font-size:12px}.pill{background:var(--yellow);color:#111827;border-radius:30px;padding:7px 12px;font-size:11px;font-weight:800}.hero{margin:22px auto 0;position:relative;height:clamp(220px,35vw,430px);overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#111827}.slide{position:absolute;inset:0;opacity:0;transition:opacity .5s}.slide.active{opacity:1}.slide img{width:100%;height:100%;object-fit:cover}.shade{position:absolute;inset:0;background:linear-gradient(0deg,#020617e8,transparent 70%)}.slide-title{position:absolute;bottom:18px;left:20px;background:#020617c9;padding:9px 13px;border-radius:20px;font-weight:700;font-size:13px}.arrows{position:absolute;inset:50% 12px auto;display:flex;justify-content:space-between;transform:translateY(-50%)}.arrows button,.dots button{border:1px solid #ffffff50;background:#020617b8;color:white;border-radius:50%;width:38px;height:38px}.dots{position:absolute;bottom:20px;right:18px;display:flex;gap:6px}.dots button{width:9px;height:9px;padding:0;border:0;background:#64748b}.dots button.active{width:24px;border-radius:12px;background:var(--yellow)}.datecard,.quote,.tile{background:linear-gradient(140deg,#0f172a,#080e1e);border:1px solid var(--line);border-radius:18px}.datecard{margin-top:18px;padding:18px;display:flex;justify-content:space-between;gap:16px;align-items:center}.time{font-size:clamp(23px,4vw,34px);font-weight:800;letter-spacing:-1px}.sub{color:var(--muted);font-size:12px}.quote{margin-top:16px;padding:16px;display:flex;gap:14px;align-items:flex-start}.principal{width:62px;height:62px;object-fit:cover;border-radius:50%;border:2px solid var(--yellow)}.quote h3{margin:0 0 7px;font-size:14px}.quote p{margin:0;color:#cbd5e1;font-size:13px;line-height:1.7;font-style:italic}.sectionhead{margin:26px 0 12px;display:flex;align-items:center;justify-content:space-between}.sectionhead h2{margin:0;font-size:18px}.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.tile{padding:18px;min-height:130px;color:white;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}.tile:hover{border-color:var(--yellow);transform:translateY(-2px)}.tile .ico{font-size:26px}.tile b{font-size:15px}.tile small{display:block;color:var(--muted);margin-top:4px}.footer{padding:30px 0 90px;text-align:center;color:#64748b;font-size:11px}.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:25;background:#0f172af2;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 4px calc(10px + env(safe-area-inset-bottom))}.mobile-nav a{color:#94a3b8;text-decoration:none;font-size:10px;text-align:center}.mobile-nav span{display:block;font-size:20px;margin-bottom:3px}.admin-open{border:1px solid #475569;background:#1e293b;color:white;padding:9px 12px;border-radius:12px;font-size:12px}.modal{display:none;position:fixed;inset:0;z-index:60;background:#000b;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.dialog{width:min(680px,100%);max-height:90vh;overflow:auto;background:#0f172a;border:1px solid #334155;border-radius:20px;padding:20px}.dialog h2{margin:0 0 14px}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:12px;color:#cbd5e1}.field input,.field textarea{width:100%;padding:11px;border:1px solid #334155;border-radius:10px;background:#020617;color:white}.field textarea{min-height:90px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.primary{background:var(--yellow);color:#111827;border:0;border-radius:11px;padding:11px 16px;font-weight:800}.secondary{background:#1e293b;color:white;border:1px solid #334155;border-radius:11px;padding:11px 16px}.status{font-size:12px;color:#a7f3d0;margin-top:12px}.hidden{display:none!important}
+@media(min-width:768px){.mobile-nav{display:none}.tiles{grid-template-columns:repeat(4,minmax(0,1fr))}.datecard{padding:22px 24px}.quote{padding:20px}.principal{width:76px;height:76px}.footer{padding-bottom:30px}}
+@media(max-width:480px){.wrap{width:calc(100% - 24px)}.topin{height:66px}.logo{width:40px;height:40px}.brand b{font-size:14px}.brand small{font-size:10px}.admin-open{padding:8px;font-size:11px}.datecard{align-items:flex-start;flex-direction:column}.hero{height:220px}.slide-title{max-width:65%;font-size:11px}.quote p{font-size:12px}}
+</style></head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="#utama" aria-label="SK Kimanis - Utama" style="text-decoration:none;color:inherit">
-        <img alt="Logo SK Kimanis" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkKxO8qjRsPw1gr1XPvVXicyVAF0WGfaJDGnw2ncZ9tiff6b9q1oHyRcQzChYlK4NxJHBA5aidIQZhq7ZgkrT78CFh5bFdK1fLosHm5GD3lYVH5yFRO6U8S1W_NjsdP-LZwuepdE0VmevSx-LVCXEovZHg0SxoEuR5gcfW7eOO8w3X1uJ6HzgDIZXrbsYWSxbQ6_FQ8mD2tl_gIupcH6_4gzHYNFuLOoGUvvAVQD3qZdtEhpo5pWXa">
-        <div>
-          <div class="brand-title">SK KIMANIS</div>
-          <div class="brand-subtitle">Papar, Sabah · Kod: <strong style="color:#facc15">XBA6115</strong></div>
-        </div>
-      </a>
-      <nav class="desktop-nav" aria-label="Navigasi utama desktop">
-        <a class="active" href="#utama"><span class="material-symbols-outlined">home</span>Utama</a>
-        <a href="#pentadbiran"><span class="material-symbols-outlined">admin_panel_settings</span>Pentadbiran</a>
-        <a href="#kurikulum"><span class="material-symbols-outlined">menu_book</span>Kurikulum</a>
-        <a href="#hem"><span class="material-symbols-outlined">groups</span>HEM</a>
-        <a href="#kokurikulum"><span class="material-symbols-outlined">sports_soccer</span>Kokurikulum</a>
-      </nav>
-      <span class="status-pill"><span class="status-dot"></span>Aktif</span>
-    </div>
-  </header>
-
-  <main id="utama">
-    <div class="page-wrap">
-      <section class="hero" id="school-carousel" aria-label="Galeri SK Kimanis">
-        <div class="slides">
-          <div class="slide">
-            <img alt="Pintu masuk dan mercu tanda SK Kimanis" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZyJrxnHnAQv040Pn2ShhO-XF4lya8TyELDIbgI9whGWyv97xTHWF-DEDWZb_1zzsY8s52etHp6Rar0lA9vUtTj9Aa-13OU6FGphYZTkkCLuMTvsnNRklrHlZXzHzfxJTD9dj7AWwWCMVb0B0jJ5YkoNrvPVF0h7DHOSAVq_4jPK0uHY0DEvF57vLG94XzeDS_xjeLPobJFmwAr-3IEJgfe87TkW0MLE7DgMQOp8wTJhGRau70wP4N">
-            <div class="hero-shade"></div><div class="slide-caption"><span class="caption-dot"></span>Pintu Masuk &amp; Mercu Tanda</div>
-          </div>
-          <div class="slide">
-            <img alt="Warga pendidik dan pelajar kohort 2015" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_vfl5IPT6VXLnTPNzXCKibLLGJjw-i0jR0vaURVJ5xxzEIL1MERru1uzN68wJkVi3tJvgKxa0_9okju9mA61Q0UUQcB4iJKIB29A1I0Yls2EPmi62G6LL6LMTFAvOmhgmRuqr23Ge_v5gAxwofpHepodDIoUd2KnzdRdKGnV1Acy2DgYXbVwr8YzPw5sLAKuZ5BR23SccRH4zP1GJa9um0UZWKxW4Tag_C5cyETWbBn6WIdf8Bl-l">
-            <div class="hero-shade"></div><div class="slide-caption"><span class="caption-dot"></span>Warga Pendidik &amp; Pelajar Kohort 2015</div>
-          </div>
-          <div class="slide">
-            <img alt="Aktiviti memanah dan kokurikulum" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAim46LY60Xf9rmwcZTKI1fMIutFZAE0vtS5TGxEmAte_IL4raTWzO1uD-H1kn3lUKHVULmhMVxxteMbCtgFedMoR_reGzPKq2y6ma5b30fXg02nasx6pruZMw0rcYgq6zcHyjxNuVpwJUSPYLuxKNXEv7GswiDDbW56HMmdb1wRxOr9eg1SZKmNFw7l4FwUQhXg3-0-unGghGQ2JFu1AalbFvsGWz7L3sLl4iSJItN3bwF8Gd545Is">
-            <div class="hero-shade"></div><div class="slide-caption"><span class="caption-dot"></span>Aktiviti Memanah &amp; Kokurikulum</div>
-          </div>
-          <div class="slide">
-            <img alt="Program kebajikan dan komuniti bersama Sabah Energy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBADVptP2dLj1vWfj0EvRpTK47YkIa5kzg6x14JI2aF9ezZVizJIizDnwc-5LDWK7B0K0xfCpa66fd9uJq8gz1hBKELp8XFKZCsDGd83LbDdG2ZhMnAwvgcpbdVyLMxKu2zeoUGZi5SDQDl8ua0SDnVTCMvliod7R8lcppAXIGAsFkYDKLWTrdpsXhjk8vliFROotKPwqKcpmsAvxcxh_RI8iMGK50hfytG54Hsn8JzdFgngHP-k6Sb">
-            <div class="hero-shade"></div><div class="slide-caption"><span class="caption-dot"></span>Program Kebajikan &amp; Komuniti SEC</div>
-          </div>
-        </div>
-        <button class="hero-btn hero-prev" type="button" aria-label="Slaid sebelumnya"><span class="material-symbols-outlined">chevron_left</span></button>
-        <button class="hero-btn hero-next" type="button" aria-label="Slaid seterusnya"><span class="material-symbols-outlined">chevron_right</span></button>
-        <div class="dots" aria-label="Pilihan slaid">
-          <button class="dot" type="button" aria-label="Pergi ke slaid 1"></button>
-          <button class="dot" type="button" aria-label="Pergi ke slaid 2"></button>
-          <button class="dot" type="button" aria-label="Pergi ke slaid 3"></button>
-          <button class="dot" type="button" aria-label="Pergi ke slaid 4"></button>
-        </div>
-        <div class="progress-track"><div class="progress-bar"></div></div>
-      </section>
-
-      <section class="info-grid" aria-label="Maklumat sekolah">
-        <div class="panel">
-          <div class="panel-heading">
-            <div style="display:flex;align-items:center;gap:10px">
-              <div class="heading-icon"><span class="material-symbols-outlined">schedule</span></div>
-              <div><div class="eyebrow">Waktu semasa · Papar, Sabah</div><div class="clock"><span id="live-clock">--:--:--</span> <span class="clock-zone" id="live-ampm">AM</span></div></div>
-            </div>
-            <div style="text-align:right"><span class="session-pill">Sesi 2025/2026</span><div style="margin-top:5px;color:#94a3b8;font-size:11px">Papar, Sabah</div></div>
-          </div>
-          <div class="date-row">
-            <div class="date-block">
-              <div class="date-box"><span id="month-label">---</span><span id="day-number">--</span></div>
-              <div><div class="date-title" id="full-date">Memuatkan tarikh...</div><div class="date-note">Minggu Persekolahan Aktif</div></div>
-            </div>
-            <div class="session-pill">✓ Usaha Jaya</div>
-          </div>
-        </div>
-        <div class="panel quote-card">
-          <img class="leader-photo" alt="Guru Besar SK Kimanis" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChCb-EcSooTPrIlPti-N3-ltpH_Tsksl7bZzRga8nbqkPLCNvDsx9SFr_s8L2yP0mOUgWli1ThO-0Fdr9GjBpdCBkCj8gVW4J6XqrAEWM381TB3mS9QyOWjiN4C4Pv8YVX98ORiEUiO0WaeALJZIKql12yELaTmpNxZNrfjXqBApJPbYdDrvsk7KSkYaDOUfxLrQhb9uvYs2HZyu-F97-Vyd6Kca1wTeRwu0NY2_tdgNtZmKhAEOug">
-          <div style="min-width:0;flex:1">
-            <div class="quote-title"><span>Amanat Guru Besar</span><span class="quote-tag">Kimanis</span></div>
-            <p class="quote-text">“Melalui empat pilar pengurusan ini, marilah kita berganding bahu berteraskan tekad ‘Usaha Jaya’ demi kecemerlangan anak-anak SK Kimanis.”</p>
-          </div>
-        </div>
-      </section>
-
-      <a class="calendar-link" href="https://www.moe.gov.my/takwim" target="_blank" rel="noopener noreferrer">
-        <div class="calendar-left">
-          <div class="calendar-icon"><span class="material-symbols-outlined">calendar_month</span></div>
-          <div><div class="calendar-title">Takwim Persekolahan KPM <span style="color:#020617;background:#facc15;border-radius:5px;padding:3px 5px;font-size:9px">SABAH</span></div><div class="calendar-sub">Kumpulan B · Sesi 2025/2026</div></div>
-        </div>
-        <span class="open-label">Buka <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span></span>
-      </a>
-
-      <section aria-labelledby="menu-heading">
-        <div class="section-title" style="margin-bottom:13px">
-          <h2 id="menu-heading"><span class="material-symbols-outlined">grid_view</span>4 Menu Utama</h2>
-          <span class="section-tag">Portal Sekolah</span>
-        </div>
-        <div class="menu-grid">
-          <a class="menu-card" id="pentadbiran" href="#pentadbiran" data-menu="Pentadbiran">
-            <div class="menu-top"><span class="menu-icon blue"><span class="material-symbols-outlined">admin_panel_settings</span></span><span class="material-symbols-outlined menu-arrow">arrow_forward</span></div>
-            <div><div class="menu-name">Pentadbiran</div><div class="menu-desc">Pengurusan Am</div></div>
-          </a>
-          <a class="menu-card" id="kurikulum" href="#kurikulum" data-menu="Kurikulum">
-            <div class="menu-top"><span class="menu-icon green"><span class="material-symbols-outlined">menu_book</span></span><span class="material-symbols-outlined menu-arrow">arrow_forward</span></div>
-            <div><div class="menu-name">Kurikulum</div><div class="menu-desc">Akademik &amp; e-RPH</div></div>
-          </a>
-          <a class="menu-card" id="hem" href="#hem" data-menu="Hal Ehwal Murid">
-            <div class="menu-top"><span class="menu-icon amber"><span class="material-symbols-outlined">groups</span></span><span class="material-symbols-outlined menu-arrow">arrow_forward</span></div>
-            <div><div class="menu-name">Hal Ehwal Murid</div><div class="menu-desc">APDM &amp; Kebajikan</div></div>
-          </a>
-          <a class="menu-card" id="kokurikulum" href="#kokurikulum" data-menu="Kokurikulum">
-            <div class="menu-top"><span class="menu-icon rose"><span class="material-symbols-outlined">sports_soccer</span></span><span class="material-symbols-outlined menu-arrow">arrow_forward</span></div>
-            <div><div class="menu-name">Kokurikulum</div><div class="menu-desc">PAJSK &amp; Sukan</div></div>
-          </a>
-        </div>
-      </section>
-      <div class="footer">© <span id="year"></span> SK Kimanis · Usaha Jaya</div>
-    </div>
-  </main>
-
-  <nav class="bottom-nav" aria-label="Navigasi telefon">
-    <div class="bottom-inner">
-      <a class="active" href="#utama"><span class="material-symbols-outlined">home</span><span>Utama</span></a>
-      <a href="#pentadbiran"><span class="material-symbols-outlined">admin_panel_settings</span><span>Pentadbiran</span></a>
-      <a href="#kurikulum"><span class="material-symbols-outlined">menu_book</span><span>Kurikulum</span></a>
-      <a href="#hem"><span class="material-symbols-outlined">groups</span><span>HEM</span></a>
-      <a href="#kokurikulum"><span class="material-symbols-outlined">sports_soccer</span><span>Kokurikulum</span></a>
-    </div>
-  </nav>
-
-  <script>
-    (() => {
-      const slides = [...document.querySelectorAll('.slide')];
-      const dots = [...document.querySelectorAll('.dot')];
-      const progress = document.querySelector('.progress-bar');
-      const carousel = document.getElementById('school-carousel');
-      let index = 0;
-      let timer = null;
-      let startedAt = 0;
-      const duration = 5000;
-      let animationFrame = null;
-
-      function renderSlide(next) {
-        index = (next + slides.length) % slides.length;
-        slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
-        dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
-        startProgress();
-      }
-      function clearProgress() {
-        if (animationFrame) cancelAnimationFrame(animationFrame);
-        if (progress) progress.style.width = '0%';
-      }
-      function startProgress() {
-        clearProgress();
-        startedAt = performance.now();
-        const tick = now => {
-          const pct = Math.min((now - startedAt) / duration * 100, 100);
-          if (progress) progress.style.width = pct + '%';
-          if (pct < 100) animationFrame = requestAnimationFrame(tick);
-        };
-        animationFrame = requestAnimationFrame(tick);
-      }
-      function stopAuto() {
-        if (timer) clearInterval(timer);
-        timer = null;
-        clearProgress();
-      }
-      function startAuto() {
-        stopAuto();
-        startProgress();
-        timer = setInterval(() => renderSlide(index + 1), duration);
-      }
-      document.querySelector('.hero-prev').addEventListener('click', () => { renderSlide(index - 1); startAuto(); });
-      document.querySelector('.hero-next').addEventListener('click', () => { renderSlide(index + 1); startAuto(); });
-      dots.forEach((dot, i) => dot.addEventListener('click', () => { renderSlide(i); startAuto(); }));
-      carousel.addEventListener('mouseenter', stopAuto);
-      carousel.addEventListener('mouseleave', startAuto);
-      carousel.addEventListener('focusin', stopAuto);
-      carousel.addEventListener('focusout', startAuto);
-      carousel.addEventListener('touchstart', stopAuto, { passive:true });
-      carousel.addEventListener('touchend', () => setTimeout(startAuto, 700), { passive:true });
-      renderSlide(0);
-      startAuto();
-
-      function updateClock() {
-        const now = new Date();
-        const time = new Intl.DateTimeFormat('en-MY', {
-          timeZone:'Asia/Kuala_Lumpur', hour:'2-digit', minute:'2-digit', second:'2-digit',
-          hour12:true
-        }).formatToParts(now);
-        const get = type => time.find(part => part.type === type)?.value || '';
-        document.getElementById('live-clock').textContent = `${get('hour')}:${get('minute')}:${get('second')}`;
-        document.getElementById('live-ampm').textContent = get('dayPeriod').toUpperCase();
-
-        const dateParts = new Intl.DateTimeFormat('ms-MY', {
-          timeZone:'Asia/Kuala_Lumpur', weekday:'long', day:'numeric', month:'long', year:'numeric'
-        }).formatToParts(now);
-        const part = type => dateParts.find(p => p.type === type)?.value || '';
-        const monthShort = new Intl.DateTimeFormat('ms-MY', {timeZone:'Asia/Kuala_Lumpur',month:'short'}).format(now).replace('.','').toUpperCase();
-        document.getElementById('month-label').textContent = monthShort;
-        document.getElementById('day-number').textContent = part('day');
-        document.getElementById('full-date').textContent =
-          `${part('weekday').charAt(0).toUpperCase()+part('weekday').slice(1)}, ${part('day')} ${part('month')} ${part('year')}`;
-        document.getElementById('year').textContent = new Intl.DateTimeFormat('en', {timeZone:'Asia/Kuala_Lumpur',year:'numeric'}).format(now);
-      }
-      updateClock();
-      setInterval(updateClock, 1000);
-
-      // Navigasi menu ini masih berupa pautan anchor. Tukar href kepada URL halaman sebenar apabila halaman modul tersedia.
-      const navLinks = [...document.querySelectorAll('.desktop-nav a, .bottom-nav a')];
-      navLinks.forEach(link => link.addEventListener('click', () => {
-        navLinks.forEach(item => item.classList.remove('active'));
-        link.classList.add('active');
-      }));
-    })();
-  </script>
-</body>
-</html>
+<header class="top"><div class="wrap topin"><div class="brand"><img class="logo" id="schoolLogo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkKxO8qjRsPw1gr1XPvVXicyVAF0WGfaJDGnw2ncZ9tiff6b9q1oHyRcQzChYlK4NxJHBA5aidIQZhq7ZgkrT78CFh5bFdK1fLosHm5GD3lYVH5yFRO6U8S1W_NjsdP-LZwuepdE0VmevSx-LVCXEovZHg0SxoEuR5gcfW7eOO8w3X1uJ6HzgDIZXrbsYWSxbQ6_FQ8mD2tl_gIupcH6_4gzHYNFuLOoGUvvAVQD3qZdtEhpo5pWXa" alt="Logo SK Kimanis"><div><b>SK KIMANIS</b><small>Papar, Sabah · Kod XBA6115</small></div></div><div style="display:flex;gap:9px;align-items:center"><span class="pill">● AKTIF</span><button class="admin-open" id="adminOpen">Login Admin</button></div></div></header>
+<main class="wrap">
+<section class="hero" id="hero"><div id="slides"></div><div class="arrows"><button id="prev" aria-label="Slaid sebelumnya">‹</button><button id="next" aria-label="Slaid seterusnya">›</button></div><div class="dots" id="dots"></div></section>
+<section class="datecard"><div><div class="sub" style="color:var(--yellow);font-weight:800">WAKTU SEMASA · PAPAR, SABAH</div><div class="time" id="clock">--:--:--</div><div id="date" class="sub"></div></div><div><span class="pill">SESI PERSEKOLAHAN</span><div class="sub" style="margin-top:8px">Usaha Jaya · 2025/2026</div></div></section>
+<section class="quote"><img id="principalImage" class="principal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChCb-EcSooTPrIlPti-N3-ltpH_Tsksl7bZzRga8nbqkPLCNvDsx9SFr_s8L2yP0mOUgWli1ThO-0Fdr9GjBpdCBkCj8gVW4J6XqrAEWM381TB3mS9QyOWjiN4C4Pv8YVX98ORiEUiO0WaeALJZIKql12yELaTmpNxZNrfjXqBApJPbYdDrvsk7KSkYaDOUfxLrQhb9uvYs2HZyu-F97-Vyd6Kca1wTeRwu0NY2_tdgNtZmKhAEOug" alt="Guru Besar"><div><h3>Amanat Guru Besar <span style="color:var(--yellow)">· Kimanis</span></h3><p id="principalMessage">“Melalui empat pilar pengurusan ini, marilah kita berganding bahu berteraskan tekad ‘Usaha Jaya’ demi kecemerlangan anak-anak SK Kimanis.”</p></div></section>
+<div class="sectionhead"><h2>Menu Utama</h2><span class="sub">Pilih bahagian</span></div><section class="tiles">
+<a class="tile" href="#" onclick="return false"><span class="ico">🛡️</span><div><b>Pentadbiran</b><small>Pengurusan Am</small></div></a>
+<a class="tile" href="#" onclick="return false"><span class="ico">📚</span><div><b>Kurikulum</b><small>Akademik &amp; e-RPH</small></div></a>
+<a class="tile" href="#" onclick="return false"><span class="ico">👥</span><div><b>Hal Ehwal Murid</b><small>APDM &amp; Kebajikan</small></div></a>
+<a class="tile" href="#" onclick="return false"><span class="ico">⚽</span><div><b>Kokurikulum</b><small>PAJSK &amp; Sukan</small></div></a>
+</section><div class="footer">Portal Rasmi SK Kimanis · Papar, Sabah</div>
+</main>
+<nav class="mobile-nav"><a href="#"><span>⌂</span>Utama</a><a href="#"><span>▣</span>Pentadbiran</a><a href="#"><span>▤</span>Kurikulum</a><a href="#"><span>♧</span>HEM</a><a href="#"><span>⚽</span>Kokurikulum</a></nav>
+<div class="modal" id="loginModal"><div class="dialog"><h2>Login Admin</h2><p class="sub">Log masuk untuk mengurus kandungan portal.</p><form id="loginForm"><div class="field"><label>Kata laluan admin</label><input type="password" id="adminPassword" required autocomplete="current-password"></div><div class="actions"><button class="primary">Log masuk</button><button type="button" class="secondary closeModal">Batal</button></div></form><div id="loginStatus" class="status"></div></div></div>
+<div class="modal" id="editorModal"><div class="dialog"><h2>Pengurusan Kandungan</h2><p class="sub">Masukkan URL gambar awam (contohnya pautan imej Google Drive yang boleh dilihat sesiapa dengan pautan). Simpan untuk menerbitkan perubahan.</p><form id="editorForm">
+<div class="field"><label>Amanat Guru Besar</label><textarea id="editMessage" required></textarea></div>
+<div class="field"><label>URL gambar Guru Besar</label><input id="editPrincipal" type="url" required></div>
+<div id="slideFields"></div>
+<div class="actions"><button class="primary">Simpan Perubahan</button><button type="button" class="secondary" id="logoutBtn">Log keluar</button><button type="button" class="secondary closeModal">Tutup</button></div></form><div id="saveStatus" class="status"></div></div></div>
+<iframe name="backendFrame" id="backendFrame" class="hidden"></iframe>
+<script>
+const API_URL="PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+const defaults={message:"Melalui empat pilar pengurusan ini, marilah kita berganding bahu berteraskan tekad 'Usaha Jaya' demi kecemerlangan anak-anak SK Kimanis.",principal:"https://lh3.googleusercontent.com/aida-public/AB6AXuChCb-EcSooTPrIlPti-N3-ltpH_Tsksl7bZzRga8nbqkPLCNvDsx9SFr_s8L2yP0mOUgWli1ThO-0Fdr9GjBpdCBkCj8gVW4J6XqrAEWM381TB3mS9QyOWjiN4C4Pv8YVX98ORiEUiO0WaeALJZIKql12yELaTmpNxZNrfjXqBApJPbYdDrvsk7KSkYaDOUfxLrQhb9uvYs2HZyu-F97-Vyd6Kca1wTeRwu0NY2_tdgNtZmKhAEOug",slides:[
+{title:"Pintu Masuk & Mercu Tanda",image:"https://lh3.googleusercontent.com/aida-public/AB6AXuAZyJrxnHnAQv040Pn2ShhO-XF4lya8TyELDIbgI9whGWyv97xTHWF-DEDWZb_1zzsY8s52etHp6Rar0lA9vUtTj9Aa-13OU6FGphYZTkkCLuMTvsnNRklrHlZXzHzfxJTD9dj7AWwWCMVb0B0jJ5YkoNrvPVF0h7DHOSAVq_4jPK0uHY0DEvF57vLG94XzeDS_xjeLPobJFmwAr-3IEJgfe87TkW0MLE7DgMQOp8wTJhGRau70wP4N"},
+{title:"Warga Pendidik & Pelajar Kohort 2015",image:"https://lh3.googleusercontent.com/aida-public/AB6AXuA_vfl5IPT6VXLnTPNzXCKibLLGJjw-i0jR0vaURVJ5xxzEIL1MERru1uzN68wJkVi3tJvgKxa0_9okju9mA61Q0UUQcB4iJKIB29A1I0Yls2EPmi62G6LL6LMTFAvOmhgmRuqr23Ge_v5gAxwofpHepodDIoUd2KnzdRdKGnV1Acy2DgYXbVwr8YzPw5sLAKuZ5BR23SccRH4zP1GJa9um0UZWKxW4Tag_C5cyETWbBn6WIdf8Bl-l"},
+{title:"Aktiviti Memanah & Kokurikulum",image:"https://lh3.googleusercontent.com/aida-public/AB6AXuAim46LY60Xf9rmwcZTKI1fMIutFZAE0vtS5TGxEmAte_IL4raTWzO1uD-H1kn3lUKHVULmhMVxxteMbCtgFedMoR_reGzPKq2y6ma5b30fXg02nasx6pruZMw0rcYgq6zcHyjxNuVpwJUSPYLuxKNXEv7GswiDDbW56HMmdb1wRxOr9eg1SZKmNFw7l4FwUQhXg3-0-unGghGQ2JFu1AalbFvsGWz7L3sLl4iSJItN3bwF8Gd545Is"},
+{title:"Program Kebajikan & Komuniti SEC",image:"https://lh3.googleusercontent.com/aida-public/AB6AXuBADVptP2dLj1vWfj0EvRpTK47YkIa5kzg6x14JI2aF9ezZVizJIizDnwc-5LDWK7B0K0xfCpa66fd9uJq8gz1hBKELp8XFKZCsDGd83LbDdG2ZhMnAwvgcpbdVyLMxKu2zeoUGZi5SDQDl8ua0SDnVTCMvliod7R8lcppAXIGAsFkYDKLWTrdpsXhjk8vliFROotKPwqKcpmsAvxcxh_RI8iMGK50hfytG54Hsn8JzdFgngHP-k6Sb"}]};
+let data=structuredClone(defaults), slideIndex=0, sessionPassword="";
+const $=id=>document.getElementById(id);
+function renderSlides(){const box=$("slides"),dots=$("dots");box.innerHTML="";dots.innerHTML="";data.slides.forEach((s,i)=>{let el=document.createElement("div");el.className="slide"+(i===slideIndex?" active":"");el.innerHTML=`<img src="${escAttr(s.image)}" alt=""><div class="shade"></div><div class="slide-title">${esc(s.title)}</div>`;box.appendChild(el);let d=document.createElement("button");d.className=i===slideIndex?"active":"";d.setAttribute("aria-label","Slaid "+(i+1));d.onclick=()=>{slideIndex=i;renderSlides()};dots.appendChild(d)})}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}function escAttr(s){return esc(s)}
+function applyData(d){if(!d)return;data={...data,...d};$("principalMessage").textContent="“"+data.message+"”";$("principalImage").src=data.principal;slideIndex=0;renderSlides()}
+function getPublic(){if(!API_URL.startsWith("https://script.google.com/"))return;const cb="cb"+Date.now();window[cb]=d=>{applyData(d);delete window[cb]};let s=document.createElement("script");s.src=API_URL+"?action=read&callback="+cb;s.onerror=()=>{};document.body.appendChild(s)}
+function move(n){slideIndex=(slideIndex+n+data.slides.length)%data.slides.length;renderSlides()}$("prev").onclick=()=>move(-1);$("next").onclick=()=>move(1);setInterval(()=>move(1),5500);
+function clock(){let n=new Date();$("clock").textContent=n.toLocaleTimeString("ms-MY",{timeZone:"Asia/Kuala_Lumpur",hour12:true});$("date").textContent=n.toLocaleDateString("ms-MY",{timeZone:"Asia/Kuala_Lumpur",weekday:"long",day:"numeric",month:"long",year:"numeric"})}clock();setInterval(clock,1000);
+$("adminOpen").onclick=()=>{$("loginModal").classList.add("show");$("adminPassword").focus()};document.querySelectorAll(".closeModal").forEach(b=>b.onclick=()=>document.querySelectorAll(".modal").forEach(m=>m.classList.remove("show")));
+function sendBackend(action,payload){return new Promise((resolve,reject)=>{if(!API_URL.startsWith("https://script.google.com/"))return reject(Error("URL Apps Script belum ditetapkan."));const id="req"+Date.now();const iframe=$("backendFrame");const listener=e=>{if(e.source!==iframe.contentWindow||!e.data||e.data.requestId!==id)return;window.removeEventListener("message",listener);e.data.ok?resolve(e.data):reject(Error(e.data.error||"Permintaan gagal."))};window.addEventListener("message",listener);const f=document.createElement("form");f.method="POST";f.action=API_URL;f.target="backendFrame";f.className="hidden";const fields={action,password:sessionPassword,requestId:id,payload:JSON.stringify(payload||{})};Object.entries(fields).forEach(([k,v])=>{let i=document.createElement("input");i.name=k;i.value=v;f.appendChild(i)});document.body.appendChild(f);f.submit();f.remove();setTimeout(()=>{window.removeEventListener("message",listener);reject(Error("Masa menunggu tamat. Semak URL deployment dan cuba lagi."))},30000)})}
+$("loginForm").onsubmit=async e=>{e.preventDefault();sessionPassword=$("adminPassword").value;$("loginStatus").textContent="Mengesahkan…";try{await sendBackend("login",{});$("loginModal").classList.remove("show");$("adminPassword").value="";openEditor()}catch(err){sessionPassword="";$("loginStatus").textContent=err.message}};
+function openEditor(){$("editMessage").value=data.message;$("editPrincipal").value=data.principal;$("slideFields").innerHTML="";data.slides.forEach((s,i)=>{$("slideFields").insertAdjacentHTML("beforeend",`<div style="border-top:1px solid #334155;margin-top:14px;padding-top:8px"><b style="font-size:13px">Slaid ${i+1}</b><div class="field"><label>Tajuk</label><input id="st${i}" value="${escAttr(s.title)}" required></div><div class="field"><label>URL gambar</label><input id="si${i}" type="url" value="${escAttr(s.image)}" required></div></div>`) });$("editorModal").classList.add("show")}
+$("editorForm").onsubmit=async e=>{e.preventDefault();let next={message:$("editMessage").value.trim(),principal:$("editPrincipal").value.trim(),slides:data.slides.map((s,i)=>({title:$("st"+i).value.trim(),image:$("si"+i).value.trim()}))};$("saveStatus").textContent="Menyimpan…";try{await sendBackend("save",next);applyData(next);$("saveStatus").textContent="Perubahan berjaya disimpan dan diterbitkan."}catch(err){$("saveStatus").textContent=err.message}};
+$("logoutBtn").onclick=()=>{sessionPassword="";$("editorModal").classList.remove("show");$("saveStatus").textContent=""};
+renderSlides();getPublic();
+</script></body></html>
