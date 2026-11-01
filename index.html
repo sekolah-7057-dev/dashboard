@@ -1,56 +1,292 @@
-<!doctype html>
-<html lang="ms">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#020617"><title>Portal SK Kimanis</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#020617;--panel:#0f172a;--line:#263449;--yellow:#facc15;--muted:#94a3b8;--blue:#38bdf8}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f8fafc;font-family:"Plus Jakarta Sans",sans-serif}button,input,textarea{font:inherit}button{cursor:pointer}.wrap{width:min(1180px,100% - 32px);margin:auto}.top{position:sticky;top:0;z-index:20;background:#0f172aeF;backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}.topin{height:76px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;object-fit:contain}.brand b{display:block;font-size:16px}.brand small{color:var(--muted);font-size:12px}.pill{background:var(--yellow);color:#111827;border-radius:30px;padding:7px 12px;font-size:11px;font-weight:800}.hero{margin:22px auto 0;position:relative;height:clamp(220px,35vw,430px);overflow:hidden;border:1px solid var(--line);border-radius:22px;background:#111827}.slide{position:absolute;inset:0;opacity:0;transition:opacity .5s}.slide.active{opacity:1}.slide img{width:100%;height:100%;object-fit:cover}.shade{position:absolute;inset:0;background:linear-gradient(0deg,#020617e8,transparent 70%)}.slide-title{position:absolute;bottom:18px;left:20px;background:#020617c9;padding:9px 13px;border-radius:20px;font-weight:700;font-size:13px}.arrows{position:absolute;inset:50% 12px auto;display:flex;justify-content:space-between;transform:translateY(-50%)}.arrows button,.dots button{border:1px solid #ffffff50;background:#020617b8;color:white;border-radius:50%;width:38px;height:38px}.dots{position:absolute;bottom:20px;right:18px;display:flex;gap:6px}.dots button{width:9px;height:9px;padding:0;border:0;background:#64748b}.dots button.active{width:24px;border-radius:12px;background:var(--yellow)}.datecard,.quote,.tile{background:linear-gradient(140deg,#0f172a,#080e1e);border:1px solid var(--line);border-radius:18px}.datecard{margin-top:18px;padding:18px;display:flex;justify-content:space-between;gap:16px;align-items:center}.time{font-size:clamp(23px,4vw,34px);font-weight:800;letter-spacing:-1px}.sub{color:var(--muted);font-size:12px}.quote{margin-top:16px;padding:16px;display:flex;gap:14px;align-items:flex-start}.principal{width:62px;height:62px;object-fit:cover;border-radius:50%;border:2px solid var(--yellow)}.quote h3{margin:0 0 7px;font-size:14px}.quote p{margin:0;color:#cbd5e1;font-size:13px;line-height:1.7;font-style:italic}.sectionhead{margin:26px 0 12px;display:flex;align-items:center;justify-content:space-between}.sectionhead h2{margin:0;font-size:18px}.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.tile{padding:18px;min-height:130px;color:white;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}.tile:hover{border-color:var(--yellow);transform:translateY(-2px)}.tile .ico{font-size:26px}.tile b{font-size:15px}.tile small{display:block;color:var(--muted);margin-top:4px}.footer{padding:30px 0 90px;text-align:center;color:#64748b;font-size:11px}.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:25;background:#0f172af2;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 4px calc(10px + env(safe-area-inset-bottom))}.mobile-nav a{color:#94a3b8;text-decoration:none;font-size:10px;text-align:center}.mobile-nav span{display:block;font-size:20px;margin-bottom:3px}.admin-open{border:1px solid #475569;background:#1e293b;color:white;padding:9px 12px;border-radius:12px;font-size:12px}.modal{display:none;position:fixed;inset:0;z-index:60;background:#000b;align-items:center;justify-content:center;padding:16px}.modal.show{display:flex}.dialog{width:min(680px,100%);max-height:90vh;overflow:auto;background:#0f172a;border:1px solid #334155;border-radius:20px;padding:20px}.dialog h2{margin:0 0 14px}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:12px;color:#cbd5e1}.field input,.field textarea{width:100%;padding:11px;border:1px solid #334155;border-radius:10px;background:#020617;color:white}.field textarea{min-height:90px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.primary{background:var(--yellow);color:#111827;border:0;border-radius:11px;padding:11px 16px;font-weight:800}.secondary{background:#1e293b;color:white;border:1px solid #334155;border-radius:11px;padding:11px 16px}.status{font-size:12px;color:#a7f3d0;margin-top:12px}.hidden{display:none!important}
-@media(min-width:768px){.mobile-nav{display:none}.tiles{grid-template-columns:repeat(4,minmax(0,1fr))}.datecard{padding:22px 24px}.quote{padding:20px}.principal{width:76px;height:76px}.footer{padding-bottom:30px}}
-@media(max-width:480px){.wrap{width:calc(100% - 24px)}.topin{height:66px}.logo{width:40px;height:40px}.brand b{font-size:14px}.brand small{font-size:10px}.admin-open{padding:8px;font-size:11px}.datecard{align-items:flex-start;flex-direction:column}.hero{height:220px}.slide-title{max-width:65%;font-size:11px}.quote p{font-size:12px}}
-</style></head>
-<body>
-<header class="top"><div class="wrap topin"><div class="brand"><img class="logo" id="schoolLogo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkKxO8qjRsPw1gr1XPvVXicyVAF0WGfaJDGnw2ncZ9tiff6b9q1oHyRcQzChYlK4NxJHBA5aidIQZhq7ZgkrT78CFh5bFdK1fLosHm5GD3lYVH5yFRO6U8S1W_NjsdP-LZwuepdE0VmevSx-LVCXEovZHg0SxoEuR5gcfW7eOO8w3X1uJ6HzgDIZXrbsYWSxbQ6_FQ8mD2tl_gIupcH6_4gzHYNFuLOoGUvvAVQD3qZdtEhpo5pWXa" alt="Logo SK Kimanis"><div><b>SK KIMANIS</b><small>Papar, Sabah · Kod XBA6115</small></div></div><div style="display:flex;gap:9px;align-items:center"><span class="pill">● AKTIF</span><button class="admin-open" id="adminOpen">Login Admin</button></div></div></header>
-<main class="wrap">
-<section class="hero" id="hero"><div id="slides"></div><div class="arrows"><button id="prev" aria-label="Slaid sebelumnya">‹</button><button id="next" aria-label="Slaid seterusnya">›</button></div><div class="dots" id="dots"></div></section>
-<section class="datecard"><div><div class="sub" style="color:var(--yellow);font-weight:800">WAKTU SEMASA · PAPAR, SABAH</div><div class="time" id="clock">--:--:--</div><div id="date" class="sub"></div></div><div><span class="pill">SESI PERSEKOLAHAN</span><div class="sub" style="margin-top:8px">Usaha Jaya · 2025/2026</div></div></section>
-<section class="quote"><img id="principalImage" class="principal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChCb-EcSooTPrIlPti-N3-ltpH_Tsksl7bZzRga8nbqkPLCNvDsx9SFr_s8L2yP0mOUgWli1ThO-0Fdr9GjBpdCBkCj8gVW4J6XqrAEWM381TB3mS9QyOWjiN4C4Pv8YVX98ORiEUiO0WaeALJZIKql12yELaTmpNxZNrfjXqBApJPbYdDrvsk7KSkYaDOUfxLrQhb9uvYs2HZyu-F97-Vyd6Kca1wTeRwu0NY2_tdgNtZmKhAEOug" alt="Guru Besar"><div><h3>Amanat Guru Besar <span style="color:var(--yellow)">· Kimanis</span></h3><p id="principalMessage">“Melalui empat pilar pengurusan ini, marilah kita berganding bahu berteraskan tekad ‘Usaha Jaya’ demi kecemerlangan anak-anak SK Kimanis.”</p></div></section>
-<div class="sectionhead"><h2>Menu Utama</h2><span class="sub">Pilih bahagian</span></div><section class="tiles">
-<a class="tile" href="#" onclick="return false"><span class="ico">🛡️</span><div><b>Pentadbiran</b><small>Pengurusan Am</small></div></a>
-<a class="tile" href="#" onclick="return false"><span class="ico">📚</span><div><b>Kurikulum</b><small>Akademik &amp; e-RPH</small></div></a>
-<a class="tile" href="#" onclick="return false"><span class="ico">👥</span><div><b>Hal Ehwal Murid</b><small>APDM &amp; Kebajikan</small></div></a>
-<a class="tile" href="#" onclick="return false"><span class="ico">⚽</span><div><b>Kokurikulum</b><small>PAJSK &amp; Sukan</small></div></a>
-</section><div class="footer">Portal Rasmi SK Kimanis · Papar, Sabah</div>
-</main>
-<nav class="mobile-nav"><a href="#"><span>⌂</span>Utama</a><a href="#"><span>▣</span>Pentadbiran</a><a href="#"><span>▤</span>Kurikulum</a><a href="#"><span>♧</span>HEM</a><a href="#"><span>⚽</span>Kokurikulum</a></nav>
-<div class="modal" id="loginModal"><div class="dialog"><h2>Login Admin</h2><p class="sub">Log masuk untuk mengurus kandungan portal.</p><form id="loginForm"><div class="field"><label>Kata laluan admin</label><input type="password" id="adminPassword" required autocomplete="current-password"></div><div class="actions"><button class="primary">Log masuk</button><button type="button" class="secondary closeModal">Batal</button></div></form><div id="loginStatus" class="status"></div></div></div>
-<div class="modal" id="editorModal"><div class="dialog"><h2>Pengurusan Kandungan</h2><p class="sub">Masukkan URL gambar awam (contohnya pautan imej Google Drive yang boleh dilihat sesiapa dengan pautan). Simpan untuk menerbitkan perubahan.</p><form id="editorForm">
-<div class="field"><label>Amanat Guru Besar</label><textarea id="editMessage" required></textarea></div>
-<div class="field"><label>URL gambar Guru Besar</label><input id="editPrincipal" type="url" required></div>
-<div id="slideFields"></div>
-<div class="actions"><button class="primary">Simpan Perubahan</button><button type="button" class="secondary" id="logoutBtn">Log keluar</button><button type="button" class="secondary closeModal">Tutup</button></div></form><div id="saveStatus" class="status"></div></div></div>
-<iframe name="backendFrame" id="backendFrame" class="hidden"></iframe>
+<!DOCTYPE html><html lang="ms"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-error-container":"#93000a","surface-container-highest":"#e0e3e5","on-primary-container":"#fdfcff","on-surface":"#191c1e","on-surface-variant":"#404752","surface-bright":"#f7f9fb","on-primary-fixed":"#001c38","on-tertiary-fixed":"#221b00","secondary-container":"#a0f399","secondary":"#1b6d24","on-background":"#191c1e","inverse-primary":"#a2c9ff","error-container":"#ffdad6","on-primary":"#ffffff","primary-container":"#0077ce","surface-container-low":"#f2f4f6","primary-fixed-dim":"#a2c9ff","outline":"#707783","surface-dim":"#d8dadc","on-secondary-fixed":"#002204","tertiary-container":"#c9a900","on-primary-fixed-variant":"#004881","surface-tint":"#0060a8","background":"#f7f9fb","tertiary-fixed":"#ffe16e","outline-variant":"#c0c7d4","on-tertiary":"#ffffff","surface":"#f7f9fb","on-error":"#ffffff","on-tertiary-fixed-variant":"#544600","on-secondary":"#ffffff","inverse-on-surface":"#eff1f3","inverse-surface":"#2d3133","primary":"#005ea4","tertiary-fixed-dim":"#e8c41d","on-secondary-fixed-variant":"#005312","error":"#ba1a1a","tertiary":"#705d00","surface-variant":"#e0e3e5","secondary-fixed-dim":"#88d982","surface-container-lowest":"#ffffff","secondary-fixed":"#a3f69c","on-secondary-container":"#217128","surface-container-high":"#e6e8ea","surface-container":"#eceef0","on-tertiary-container":"#4c3f00","primary-fixed":"#d3e4ff"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"gutter":"0.75rem","space-xs":"0.25rem","space-sm":"0.5rem","margin":"1rem","space-lg":"1.5rem","space-xl":"2rem","space-md":"1rem"},fontFamily:{"body-sm":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"label-lg":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"headline-xl":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"]},fontSize:{"body-sm":["12px",{lineHeight:"16px",fontWeight:"400"}],"body-md":["14px",{lineHeight:"20px",fontWeight:"400"}],"body-lg":["16px",{lineHeight:"24px",fontWeight:"500"}],"headline-lg-mobile":["22px",{lineHeight:"28px",letterSpacing:"-0.01em",fontWeight:"700"}],"label-sm":["10px",{lineHeight:"12px",letterSpacing:"0.04em",fontWeight:"700"}],"label-lg":["14px",{lineHeight:"20px",fontWeight:"600"}],"label-md":["12px",{lineHeight:"16px",letterSpacing:"0.02em",fontWeight:"600"}],"headline-lg":["24px",{lineHeight:"32px",letterSpacing:"-0.01em",fontWeight:"700"}],"headline-xl":["32px",{lineHeight:"40px",letterSpacing:"-0.02em",fontWeight:"800"}],"headline-md":["18px",{lineHeight:"24px",fontWeight:"700"}]}}}</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+    .ken-burns {
+      animation: kenburns 8s ease infinite alternate;
+    }
+    @keyframes kenburns {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+    .slide-item {
+      transition: opacity 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-slate-950 font-body-md text-body-md text-slate-100 antialiased flex flex-col min-h-screen" data-mode="connect"><header class="fixed top-0 w-full z-50 pt-safe bg-slate-900/90 backdrop-blur-xl border-b border-slate-800 shadow-md"><div class="h-16 px-4 flex items-center justify-between max-w-md md:max-w-xl mx-auto"><div class="flex items-center gap-3 min-w-0"><img alt="Logo SK Kimanis" class="h-10 w-auto object-contain shrink-0 drop-shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkKxO8qjRsPw1gr1XPvVXicyVAF0WGfaJDGnw2ncZ9tiff6b9q1oHyRcQzChYlK4NxJHBA5aidIQZhq7ZgkrT78CFh5bFdK1fLosHm5GD3lYVH5yFRO6U8S1W_NjsdP-LZwuepdE0VmevSx-LVCXEovZHg0SxoEuR5gcfW7eOO8w3X1uJ6HzgDIZXrbsYWSxbQ6_FQ8mD2tl_gIupcH6_4gzHYNFuLOoGUvvAVQD3qZdtEhpo5pWXa"><div class="flex flex-col min-w-0"><span class="font-headline-md text-[16px] text-white font-bold tracking-wide leading-none truncate">SK KIMANIS</span><span class="text-[11px] text-slate-400 font-medium tracking-wide leading-tight truncate">Papar, Sabah • Kod: <strong class="text-yellow-400 font-bold">XBA6115</strong></span></div></div><div class="flex items-center gap-1.5 shrink-0"><span class="px-3 py-1 rounded-full bg-yellow-400 text-slate-950 font-label-sm text-[11px] font-extrabold inline-flex items-center gap-1.5 shadow-md shadow-yellow-400/20"><span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse"></span><span class="">Aktif</span></span></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-slate-950 min-h-screen"><div class="flex flex-col w-full pb-8"><!-- Hero Banner / Interaktif Slaid Carousel dengan Crossfade & Ken Burns Zoom -->
+<div class="px-4 pt-3 max-w-md md:max-w-xl mx-auto w-full"><div class="relative w-full h-52 sm:h-72 md:h-80 rounded-2xl overflow-hidden shadow-xl border border-slate-800/80 bg-slate-900 group select-none" id="school-carousel"><div class="relative w-full h-full" id="carousel-slides"><div class="slide-item absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none z-0" data-index="0"><img alt="Mercu Tanda &amp; Pintu Masuk SK Kimanis" class="slide-img w-full h-full object-cover transition-transform duration-[4000ms] ease-out scale-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZyJrxnHnAQv040Pn2ShhO-XF4lya8TyELDIbgI9whGWyv97xTHWF-DEDWZb_1zzsY8s52etHp6Rar0lA9vUtTj9Aa-13OU6FGphYZTkkCLuMTvsnNRklrHlZXzHzfxJTD9dj7AWwWCMVb0B0jJ5YkoNrvPVF0h7DHOSAVq_4jPK0uHY0DEvF57vLG94XzeDS_xjeLPobJFmwAr-3IEJgfe87TkW0MLE7DgMQOp8wTJhGRau70wP4N"><div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-transparent pointer-events-none"></div><div class="absolute inset-0 bg-yellow-400/5 mix-blend-overlay pointer-events-none"></div><div class="absolute bottom-3 left-3 flex items-center gap-1.5 bg-slate-950/85 backdrop-blur-md px-2.5 py-1 rounded-full border border-yellow-400/40 shadow-sm z-20"><span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span><span class="text-[11px] font-bold text-white tracking-wide truncate max-w-[210px]">Pintu Masuk &amp; Mercu Tanda</span></div></div><div class="slide-item absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out opacity-100 pointer-events-auto z-10" data-index="1"><img alt="Warga Pendidik &amp; Program Sekolah Kohort 2015" class="slide-img w-full h-full object-cover transition-transform duration-[4000ms] ease-out scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_vfl5IPT6VXLnTPNzXCKibLLGJjw-i0jR0vaURVJ5xxzEIL1MERru1uzN68wJkVi3tJvgKxa0_9okju9mA61Q0UUQcB4iJKIB29A1I0Yls2EPmi62G6LL6LMTFAvOmhgmRuqr23Ge_v5gAxwofpHepodDIoUd2KnzdRdKGnV1Acy2DgYXbVwr8YzPw5sLAKuZ5BR23SccRH4zP1GJa9um0UZWKxW4Tag_C5cyETWbBn6WIdf8Bl-l"><div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-transparent pointer-events-none"></div><div class="absolute inset-0 bg-yellow-400/5 mix-blend-overlay pointer-events-none"></div><div class="absolute bottom-3 left-3 flex items-center gap-1.5 bg-slate-950/85 backdrop-blur-md px-2.5 py-1 rounded-full border border-yellow-400/40 shadow-sm z-20"><span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span><span class="text-[11px] font-bold text-white tracking-wide truncate max-w-[210px]">Warga Pendidik &amp; Pelajar Kohort 2015</span></div></div><div class="slide-item absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none z-0" data-index="2"><img alt="Aktiviti Memanah &amp; Sukan Kokurikulum" class="slide-img w-full h-full object-cover transition-transform duration-[4000ms] ease-out scale-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAim46LY60Xf9rmwcZTKI1fMIutFZAE0vtS5TGxEmAte_IL4raTWzO1uD-H1kn3lUKHVULmhMVxxteMbCtgFedMoR_reGzPKq2y6ma5b30fXg02nasx6pruZMw0rcYgq6zcHyjxNuVpwJUSPYLuxKNXEv7GswiDDbW56HMmdb1wRxOr9eg1SZKmNFw7l4FwUQhXg3-0-unGghGQ2JFu1AalbFvsGWz7L3sLl4iSJItN3bwF8Gd545Is"><div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-transparent pointer-events-none"></div><div class="absolute inset-0 bg-yellow-400/5 mix-blend-overlay pointer-events-none"></div><div class="absolute bottom-3 left-3 flex items-center gap-1.5 bg-slate-950/85 backdrop-blur-md px-2.5 py-1 rounded-full border border-yellow-400/40 shadow-sm z-20"><span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span><span class="text-[11px] font-bold text-white tracking-wide truncate max-w-[210px]">Aktiviti Memanah &amp; Kokurikulum</span></div></div><div class="slide-item absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out opacity-0 pointer-events-none z-0" data-index="3"><img alt="Program Kebajikan &amp; Komuniti Bersama SEC" class="slide-img w-full h-full object-cover transition-transform duration-[4000ms] ease-out scale-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBADVptP2dLj1vWfj0EvRpTK47YkIa5kzg6x14JI2aF9ezZVizJIizDnwc-5LDWK7B0K0xfCpa66fd9uJq8gz1hBKELp8XFKZCsDGd83LbDdG2ZhMnAwvgcpbdVyLMxKu2zeoUGZi5SDQDl8ua0SDnVTCMvliod7R8lcppAXIGAsFkYDKLWTrdpsXhjk8vliFROotKPwqKcpmsAvxcxh_RI8iMGK50hfytG54Hsn8JzdFgngHP-k6Sb"><div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-transparent pointer-events-none"></div><div class="absolute inset-0 bg-yellow-400/5 mix-blend-overlay pointer-events-none"></div><div class="absolute bottom-3 left-3 flex items-center gap-1.5 bg-slate-950/85 backdrop-blur-md px-2.5 py-1 rounded-full border border-yellow-400/40 shadow-sm z-20"><span class="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span><span class="text-[11px] font-bold text-white tracking-wide truncate max-w-[210px]">Program Kebajikan &amp; Komuniti SEC</span></div></div></div><button aria-label="Slaid Sebelumnya" class="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-yellow-400 hover:text-slate-950 text-white backdrop-blur-md border border-white/20 hover:border-yellow-400 flex items-center justify-center transition-all shadow-md active:scale-95 z-20" id="btn-prev-slide" type="button"><span class="material-symbols-outlined text-[18px]">chevron_left</span></button><button aria-label="Slaid Seterusnya" class="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-slate-900/80 hover:bg-yellow-400 hover:text-slate-950 text-white backdrop-blur-md border border-white/20 hover:border-yellow-400 flex items-center justify-center transition-all shadow-md active:scale-95 z-20" id="btn-next-slide" type="button"><span class="material-symbols-outlined text-[18px]">chevron_right</span></button><div class="absolute bottom-3 right-3 flex items-center gap-1.5 z-20 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-slate-700/60 shadow-md"><button aria-label="Pergi ke slaid 1" class="carousel-dot w-2 h-2 rounded-full bg-slate-500 hover:bg-slate-400 transition-all duration-300" data-slide="0" type="button"></button><button aria-label="Pergi ke slaid 2" class="carousel-dot w-6 h-2 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)] transition-all duration-300" data-slide="1" type="button"></button><button aria-label="Pergi ke slaid 3" class="carousel-dot w-2 h-2 rounded-full bg-slate-500 hover:bg-slate-400 transition-all duration-300" data-slide="2" type="button"></button><button aria-label="Pergi ke slaid 4" class="carousel-dot w-2 h-2 rounded-full bg-slate-500 hover:bg-slate-400 transition-all duration-300" data-slide="3" type="button"></button></div><div class="absolute top-0 left-0 right-0 h-1 bg-white/10 z-20 overflow-hidden"><div class="h-full bg-yellow-400 transition-all" id="carousel-progress" style="width: 0%;"></div></div></div></div>
+<div class="px-4 flex flex-col gap-5 mt-4 max-w-md md:max-w-xl mx-auto w-full"><div class="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-slate-800 shadow-xl relative overflow-hidden"><div class="absolute -right-8 -top-8 w-24 h-24 bg-yellow-400/10 rounded-full blur-xl pointer-events-none"></div><div class="flex items-center justify-between pb-3 border-b border-slate-800/80"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center text-yellow-400"><span class="material-symbols-outlined text-[18px]">schedule</span></div><div><span class="text-[10px] font-bold uppercase tracking-wider text-yellow-400/90 block">Waktu Semasa</span><div class="text-[20px] font-extrabold text-white font-mono tracking-tight flex items-baseline gap-1"><span id="live-clock" class="">12:31:03</span><span class="text-[10px] text-yellow-400 font-bold uppercase" id="live-ampm">AM</span></div></div></div><div class="flex items-col items-end"><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-yellow-400/10 border border-yellow-400/30 text-yellow-400"><span class="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></span><span class="text-[11px] font-bold">Sesi 2025/2026</span></div><span class="text-[10px] text-slate-400 mt-1 font-medium">Papar, Sabah</span></div></div><div class="flex items-center justify-between pt-3"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-slate-800/90 border border-slate-700/60 flex flex-col items-center justify-center text-center shadow-inner"><span class="text-[9px] font-bold text-yellow-400 uppercase leading-none">MEI</span><span class="text-[14px] font-extrabold text-white leading-none mt-0.5" id="current-day-num">18</span></div><div class="flex flex-col"><span class="text-[13px] font-bold text-slate-100" id="current-day-name">Ahad, 18 Mei 2025</span><span class="text-[11px] text-slate-400 font-medium flex items-center gap-1"><span class="material-symbols-outlined text-[12px] text-yellow-400">event_available</span> Minggu Persekolahan Aktif</span></div></div><div class="flex items-center gap-1 bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60"><span class="material-symbols-outlined text-yellow-400 text-[15px]">verified</span><span class="text-[11px] font-bold text-slate-200 uppercase tracking-wide">Usaha Jaya</span></div></div></div><div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 shadow-lg flex items-start gap-3"><div class="w-12 h-12 rounded-full overflow-hidden shrink-0 border border-yellow-400/80 shadow-md ring-2 ring-yellow-400/30 bg-slate-800 flex items-center justify-center"><img alt="Guru Besar SK Kimanis" class="w-full h-full object-cover object-top scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChCb-EcSooTPrIlPti-N3-ltpH_Tsksl7bZzRga8nbqkPLCNvDsx9SFr_s8L2yP0mOUgWli1ThO-0Fdr9GjBpdCBkCj8gVW4J6XqrAEWM381TB3mS9QyOWjiN4C4Pv8YVX98ORiEUiO0WaeALJZIKql12yELaTmpNxZNrfjXqBApJPbYdDrvsk7KSkYaDOUfxLrQhb9uvYs2HZyu-F97-Vyd6Kca1wTeRwu0NY2_tdgNtZmKhAEOug"></div><div class="flex flex-col min-w-0 flex-1 leading-snug"><div class="flex items-center justify-between gap-1"><span class="font-label-md text-[13px] font-bold text-white truncate">Amanat Guru Besar</span><span class="text-[10px] text-yellow-400 font-bold px-2 py-0.5 rounded bg-yellow-400/15 border border-yellow-400/30 uppercase">Kimanis</span></div><p class="font-body-sm text-[12px] text-slate-300 italic mt-1 leading-relaxed">"Melalui empat pilar pengurusan ini, marilah kita berganding bahu berteraskan tekad 'Usaha Jaya' demi kecemerlangan anak-anak SK Kimanis."</p></div></div><a class="group flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-yellow-400/30 shadow-lg hover:border-yellow-400/70 hover:shadow-yellow-400/10 transition-all active:scale-[0.98]" href="https://www.moe.gov.my/takwim" rel="noopener noreferrer" target="_blank" aria-label="Buka Takwim Persekolahan KPM di tab baharu"><div class="flex items-center gap-3 min-w-0"><div class="w-10 h-10 rounded-xl bg-yellow-400/15 border border-yellow-400/30 flex items-center justify-center text-yellow-400 shrink-0 group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all"><span class="material-symbols-outlined text-[22px]">calendar_month</span></div><div class="flex flex-col min-w-0"><div class="flex items-center gap-1.5"><span class="font-label-md text-[13px] font-bold text-white group-hover:text-yellow-400 transition-colors truncate">Takwim Persekolahan KPM</span><span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-yellow-400 text-slate-950 shrink-0">Sabah</span></div><span class="text-[11px] text-slate-400 font-medium tracking-wide mt-0.5 truncate">Kumpulan B • Sesi 2025/2026</span></div></div><div class="flex items-center gap-1 text-yellow-400 shrink-0 bg-slate-800/80 px-2.5 py-1.5 rounded-xl border border-yellow-400/20 group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all"><span class="text-[11px] font-bold hidden sm:inline">Buka</span><span class="material-symbols-outlined text-[16px]">open_in_new</span></div></a><div class="flex flex-col gap-3 mt-1"><div class="flex items-center justify-between px-1"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-yellow-400 text-[20px]">grid_view</span><h2 class="font-headline-md text-[15px] font-bold text-white tracking-wide">4 Menu Utama</h2></div><span class="px-2 py-0.5 rounded-full bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 text-[10px] font-bold uppercase tracking-wider">Butang Interaktif</span></div><div class="grid grid-cols-2 gap-3"><a class="group flex flex-col justify-between p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-yellow-400/70 transition-all duration-300 shadow-lg active:scale-95 relative overflow-hidden" data-path="pentadbiran" href="#menu-link-modal"><div class="flex items-center justify-between w-full mb-3"><div class="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-400/30 flex items-center justify-center text-blue-400 group-hover:scale-105 group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all"><span class="material-symbols-outlined text-[22px]">admin_panel_settings</span></div><span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-yellow-400 group-hover:translate-x-0.5 transition-all">arrow_forward</span></div><div><span class="font-label-md text-[14px] font-bold text-white group-hover:text-yellow-400 transition-colors block leading-tight truncate">Pentadbiran</span><span class="text-[11px] text-slate-400 font-medium tracking-wide block mt-0.5 truncate">Pengurusan Am</span></div></a><a class="group flex flex-col justify-between p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-yellow-400/70 transition-all duration-300 shadow-lg active:scale-95 relative overflow-hidden" data-path="kurikulum" href="#menu-link-modal"><div class="flex items-center justify-between w-full mb-3"><div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-400/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all"><span class="material-symbols-outlined text-[22px]">menu_book</span></div><span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-yellow-400 group-hover:translate-x-0.5 transition-all">arrow_forward</span></div><div><span class="font-label-md text-[14px] font-bold text-white group-hover:text-yellow-400 transition-colors block leading-tight truncate">Kurikulum</span><span class="text-[11px] text-slate-400 font-medium tracking-wide block mt-0.5 truncate">Akademik &amp; e-RPH</span></div></a><a class="group flex flex-col justify-between p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-yellow-400/70 transition-all duration-300 shadow-lg active:scale-95 relative overflow-hidden" data-path="hem" href="#menu-link-modal"><div class="flex items-center justify-between w-full mb-3"><div class="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-center text-amber-400 group-hover:scale-105 group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all"><span class="material-symbols-outlined text-[22px]">groups</span></div><span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-yellow-400 group-hover:translate-x-0.5 transition-all">arrow_forward</span></div><div><span class="font-label-md text-[14px] font-bold text-white group-hover:text-yellow-400 transition-colors block leading-tight truncate">Hal Ehwal Murid</span><span class="text-[11px] text-slate-400 font-medium tracking-wide block mt-0.5 truncate">APDM &amp; Kebajikan</span></div></a><a class="group flex flex-col justify-between p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-yellow-400/70 transition-all duration-300 shadow-lg active:scale-95 relative overflow-hidden" data-path="kokurikulum" href="#menu-link-modal"><div class="flex items-center justify-between w-full mb-3"><div class="w-10 h-10 rounded-xl bg-rose-500/15 border border-rose-400/30 flex items-center justify-center text-rose-400 group-hover:scale-105 group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all"><span class="material-symbols-outlined text-[22px]">sports_soccer</span></div><span class="material-symbols-outlined text-[18px] text-slate-500 group-hover:text-yellow-400 group-hover:translate-x-0.5 transition-all">arrow_forward</span></div><div><span class="font-label-md text-[14px] font-bold text-white group-hover:text-yellow-400 transition-colors block leading-tight truncate">Kokurikulum</span><span class="text-[11px] text-slate-400 font-medium tracking-wide block mt-0.5 truncate">PAJSK &amp; Sukan</span></div></a></div></div></div></div>
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbwjxwzX4HXCs3XknnWlc0e3WGl7hWu2N9Oq1IuUN3fXpYVfHGP9o5vY90I2Jvyoj4SG/exec";
-const defaults={message:"Melalui empat pilar pengurusan ini, marilah kita berganding bahu berteraskan tekad 'Usaha Jaya' demi kecemerlangan anak-anak SK Kimanis.",principal:"https://lh3.googleusercontent.com/aida-public/AB6AXuChCb-EcSooTPrIlPti-N3-ltpH_Tsksl7bZzRga8nbqkPLCNvDsx9SFr_s8L2yP0mOUgWli1ThO-0Fdr9GjBpdCBkCj8gVW4J6XqrAEWM381TB3mS9QyOWjiN4C4Pv8YVX98ORiEUiO0WaeALJZIKql12yELaTmpNxZNrfjXqBApJPbYdDrvsk7KSkYaDOUfxLrQhb9uvYs2HZyu-F97-Vyd6Kca1wTeRwu0NY2_tdgNtZmKhAEOug",slides:[
-{title:"Pintu Masuk & Mercu Tanda",image:"https://lh3.googleusercontent.com/aida-public/AB6AXuAZyJrxnHnAQv040Pn2ShhO-XF4lya8TyELDIbgI9whGWyv97xTHWF-DEDWZb_1zzsY8s52etHp6Rar0lA9vUtTj9Aa-13OU6FGphYZTkkCLuMTvsnNRklrHlZXzHzfxJTD9dj7AWwWCMVb0B0jJ5YkoNrvPVF0h7DHOSAVq_4jPK0uHY0DEvF57vLG94XzeDS_xjeLPobJFmwAr-3IEJgfe87TkW0MLE7DgMQOp8wTJhGRau70wP4N"},
-{title:"Warga Pendidik & Pelajar Kohort 2015",image:"https://lh3.googleusercontent.com/aida-public/AB6AXuA_vfl5IPT6VXLnTPNzXCKibLLGJjw-i0jR0vaURVJ5xxzEIL1MERru1uzN68wJkVi3tJvgKxa0_9okju9mA61Q0UUQcB4iJKIB29A1I0Yls2EPmi62G6LL6LMTFAvOmhgmRuqr23Ge_v5gAxwofpHepodDIoUd2KnzdRdKGnV1Acy2DgYXbVwr8YzPw5sLAKuZ5BR23SccRH4zP1GJa9um0UZWKxW4Tag_C5cyETWbBn6WIdf8Bl-l"},
-{title:"Aktiviti Memanah & Kokurikulum",image:"https://lh3.googleusercontent.com/aida-public/AB6AXuAim46LY60Xf9rmwcZTKI1fMIutFZAE0vtS5TGxEmAte_IL4raTWzO1uD-H1kn3lUKHVULmhMVxxteMbCtgFedMoR_reGzPKq2y6ma5b30fXg02nasx6pruZMw0rcYgq6zcHyjxNuVpwJUSPYLuxKNXEv7GswiDDbW56HMmdb1wRxOr9eg1SZKmNFw7l4FwUQhXg3-0-unGghGQ2JFu1AalbFvsGWz7L3sLl4iSJItN3bwF8Gd545Is"},
-{title:"Program Kebajikan & Komuniti SEC",image:"https://lh3.googleusercontent.com/aida-public/AB6AXuBADVptP2dLj1vWfj0EvRpTK47YkIa5kzg6x14JI2aF9ezZVizJIizDnwc-5LDWK7B0K0xfCpa66fd9uJq8gz1hBKELp8XFKZCsDGd83LbDdG2ZhMnAwvgcpbdVyLMxKu2zeoUGZi5SDQDl8ua0SDnVTCMvliod7R8lcppAXIGAsFkYDKLWTrdpsXhjk8vliFROotKPwqKcpmsAvxcxh_RI8iMGK50hfytG54Hsn8JzdFgngHP-k6Sb"}]};
-let data=structuredClone(defaults), slideIndex=0, sessionPassword="";
-const $=id=>document.getElementById(id);
-function renderSlides(){const box=$("slides"),dots=$("dots");box.innerHTML="";dots.innerHTML="";data.slides.forEach((s,i)=>{let el=document.createElement("div");el.className="slide"+(i===slideIndex?" active":"");el.innerHTML=`<img src="${escAttr(s.image)}" alt=""><div class="shade"></div><div class="slide-title">${esc(s.title)}</div>`;box.appendChild(el);let d=document.createElement("button");d.className=i===slideIndex?"active":"";d.setAttribute("aria-label","Slaid "+(i+1));d.onclick=()=>{slideIndex=i;renderSlides()};dots.appendChild(d)})}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}function escAttr(s){return esc(s)}
-function applyData(d){if(!d)return;data={...data,...d};$("principalMessage").textContent="“"+data.message+"”";$("principalImage").src=data.principal;slideIndex=0;renderSlides()}
-function getPublic(){if(!API_URL.startsWith("https://script.google.com/"))return;const cb="cb"+Date.now();window[cb]=d=>{applyData(d);delete window[cb]};let s=document.createElement("script");s.src=API_URL+"?action=read&callback="+cb;s.onerror=()=>{};document.body.appendChild(s)}
-function move(n){slideIndex=(slideIndex+n+data.slides.length)%data.slides.length;renderSlides()}$("prev").onclick=()=>move(-1);$("next").onclick=()=>move(1);setInterval(()=>move(1),5500);
-function clock(){let n=new Date();$("clock").textContent=n.toLocaleTimeString("ms-MY",{timeZone:"Asia/Kuala_Lumpur",hour12:true});$("date").textContent=n.toLocaleDateString("ms-MY",{timeZone:"Asia/Kuala_Lumpur",weekday:"long",day:"numeric",month:"long",year:"numeric"})}clock();setInterval(clock,1000);
-$("adminOpen").onclick=()=>{$("loginModal").classList.add("show");$("adminPassword").focus()};document.querySelectorAll(".closeModal").forEach(b=>b.onclick=()=>document.querySelectorAll(".modal").forEach(m=>m.classList.remove("show")));
-function sendBackend(action,payload){return new Promise((resolve,reject)=>{if(!API_URL.startsWith("https://script.google.com/"))return reject(Error("URL Apps Script belum ditetapkan."));const id="req"+Date.now();const iframe=$("backendFrame");const listener=e=>{if(e.source!==iframe.contentWindow||!e.data||e.data.requestId!==id)return;window.removeEventListener("message",listener);e.data.ok?resolve(e.data):reject(Error(e.data.error||"Permintaan gagal."))};window.addEventListener("message",listener);const f=document.createElement("form");f.method="POST";f.action=API_URL;f.target="backendFrame";f.className="hidden";const fields={action,password:sessionPassword,requestId:id,payload:JSON.stringify(payload||{})};Object.entries(fields).forEach(([k,v])=>{let i=document.createElement("input");i.name=k;i.value=v;f.appendChild(i)});document.body.appendChild(f);f.submit();f.remove();setTimeout(()=>{window.removeEventListener("message",listener);reject(Error("Masa menunggu tamat. Semak URL deployment dan cuba lagi."))},30000)})}
-$("loginForm").onsubmit=async e=>{e.preventDefault();sessionPassword=$("adminPassword").value;$("loginStatus").textContent="Mengesahkan…";try{await sendBackend("login",{});$("loginModal").classList.remove("show");$("adminPassword").value="";openEditor()}catch(err){sessionPassword="";$("loginStatus").textContent=err.message}};
-function openEditor(){$("editMessage").value=data.message;$("editPrincipal").value=data.principal;$("slideFields").innerHTML="";data.slides.forEach((s,i)=>{$("slideFields").insertAdjacentHTML("beforeend",`<div style="border-top:1px solid #334155;margin-top:14px;padding-top:8px"><b style="font-size:13px">Slaid ${i+1}</b><div class="field"><label>Tajuk</label><input id="st${i}" value="${escAttr(s.title)}" required></div><div class="field"><label>URL gambar</label><input id="si${i}" type="url" value="${escAttr(s.image)}" required></div></div>`) });$("editorModal").classList.add("show")}
-$("editorForm").onsubmit=async e=>{e.preventDefault();let next={message:$("editMessage").value.trim(),principal:$("editPrincipal").value.trim(),slides:data.slides.map((s,i)=>({title:$("st"+i).value.trim(),image:$("si"+i).value.trim()}))};$("saveStatus").textContent="Menyimpan…";try{await sendBackend("save",next);applyData(next);$("saveStatus").textContent="Perubahan berjaya disimpan dan diterbitkan."}catch(err){$("saveStatus").textContent=err.message}};
-$("logoutBtn").onclick=()=>{sessionPassword="";$("editorModal").classList.remove("show");$("saveStatus").textContent=""};
-renderSlides();getPublic();
-</script></body></html>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Setup Automatic Carousel with Crossfade & Ken Burns effect
+    const slides = document.querySelectorAll('#carousel-slides .slide-item');
+    const dots = document.querySelectorAll('.carousel-dot');
+    const btnPrev = document.getElementById('btn-prev-slide');
+    const btnNext = document.getElementById('btn-next-slide');
+    const carouselContainer = document.getElementById('school-carousel');
+    const progressBar = document.getElementById('carousel-progress');
+    
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+    const intervalTime = 3500; // 3.5 saat
+    let autoSlideTimer = null;
+    let progressTimer = null;
+    let progressStart = 0;
+
+    function resetProgress() {
+      if (progressTimer) cancelAnimationFrame(progressTimer);
+      if (progressBar) progressBar.style.width = '0%';
+    }
+
+    function startProgress() {
+      resetProgress();
+      progressStart = performance.now();
+      function update() {
+        const elapsed = performance.now() - progressStart;
+        const progress = Math.min((elapsed / intervalTime) * 100, 100);
+        if (progressBar) {
+          progressBar.style.width = progress + '%';
+        }
+        if (elapsed < intervalTime) {
+          progressTimer = requestAnimationFrame(update);
+        }
+      }
+      progressTimer = requestAnimationFrame(update);
+    }
+
+    function updateSlide(index) {
+      currentSlide = (index + totalSlides) % totalSlides;
+      
+      slides.forEach((slide, idx) => {
+        const img = slide.querySelector('.slide-img');
+        if (idx === currentSlide) {
+          slide.classList.remove('opacity-0', 'pointer-events-none', 'z-0');
+          slide.classList.add('opacity-100', 'pointer-events-auto', 'z-10');
+          if (img) {
+            img.classList.remove('scale-100');
+            img.classList.add('scale-105');
+          }
+        } else {
+          slide.classList.remove('opacity-100', 'pointer-events-auto', 'z-10');
+          slide.classList.add('opacity-0', 'pointer-events-none', 'z-0');
+          if (img) {
+            img.classList.remove('scale-105');
+            img.classList.add('scale-100');
+          }
+        }
+      });
+
+      dots.forEach((dot, idx) => {
+        if (idx === currentSlide) {
+          dot.className = 'carousel-dot w-6 h-2 rounded-full bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)] transition-all duration-300';
+        } else {
+          dot.className = 'carousel-dot w-2 h-2 rounded-full bg-slate-500 hover:bg-slate-400 transition-all duration-300';
+        }
+      });
+
+      startProgress();
+    }
+
+    function startAutoSlide() {
+      stopAutoSlide();
+      startProgress();
+      autoSlideTimer = setInterval(() => {
+        updateSlide(currentSlide + 1);
+      }, intervalTime);
+    }
+
+    function stopAutoSlide() {
+      if (autoSlideTimer) {
+        clearInterval(autoSlideTimer);
+        autoSlideTimer = null;
+      }
+      resetProgress();
+    }
+
+    if (btnPrev && btnNext) {
+      btnPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateSlide(currentSlide - 1);
+        startAutoSlide();
+      });
+      btnNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateSlide(currentSlide + 1);
+        startAutoSlide();
+      });
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const slideIndex = parseInt(dot.getAttribute('data-slide') || '0', 10);
+        updateSlide(slideIndex);
+        startAutoSlide();
+      });
+    });
+
+    if (carouselContainer) {
+      carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+      carouselContainer.addEventListener('mouseleave', startAutoSlide);
+      carouselContainer.addEventListener('touchstart', stopAutoSlide, { passive: true });
+      carouselContainer.addEventListener('touchend', () => {
+        setTimeout(startAutoSlide, 500);
+      }, { passive: true });
+    }
+
+    // Mulakan autoplay
+    updateSlide(0);
+    startAutoSlide();
+
+    // Jam Digital Langsung
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      const formattedHours = String(hours).padStart(2, '0');
+      
+      const clockEl = document.getElementById('live-clock');
+      const ampmEl = document.getElementById('live-ampm');
+      if (clockEl) clockEl.textContent = `${formattedHours}:${minutes}:${seconds}`;
+      if (ampmEl) ampmEl.textContent = ampm;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Pautan menu: buka pilihan sistem yang berkaitan, bukan pautan "#" kosong.
+    const menuResources = {
+      pentadbiran: {
+        title: 'Pentadbiran',
+        icon: 'admin_panel_settings',
+        links: [
+          { title: 'Portal Rasmi KPM', detail: 'Kementerian Pendidikan Malaysia', url: 'https://www.moe.gov.my/laman-utama', icon: 'account_balance' },
+          { title: 'idMe KPM', detail: 'Sistem pengurusan identiti KPM', url: 'https://idme.moe.gov.my/', icon: 'verified_user' }
+        ]
+      },
+      kurikulum: {
+        title: 'Kurikulum',
+        icon: 'menu_book',
+        links: [
+          { title: 'Portal Rasmi KPM', detail: 'Maklumat dan sumber KPM', url: 'https://www.moe.gov.my/laman-utama', icon: 'school' },
+          { title: 'Takwim Persekolahan KPM', detail: 'Takwim rasmi persekolahan', url: 'https://www.moe.gov.my/takwim', icon: 'calendar_month' }
+        ]
+      },
+      hem: {
+        title: 'Hal Ehwal Murid',
+        icon: 'groups',
+        links: [
+          { title: 'APDM', detail: 'Aplikasi Pangkalan Data Murid', url: 'https://apdm.moe.gov.my/', icon: 'groups' },
+          { title: 'idMe KPM', detail: 'Sistem pengurusan identiti KPM', url: 'https://idme.moe.gov.my/', icon: 'verified_user' }
+        ]
+      },
+      kokurikulum: {
+        title: 'Kokurikulum',
+        icon: 'sports_soccer',
+        links: [
+          { title: 'PAJSK KPM', detail: 'Pentaksiran aktiviti jasmani, sukan dan kokurikulum', url: 'https://pajsk.moe.gov.my/index.php', icon: 'sports' },
+          { title: 'Takwim Persekolahan KPM', detail: 'Takwim rasmi persekolahan', url: 'https://www.moe.gov.my/takwim', icon: 'calendar_month' }
+        ]
+      }
+    };
+
+    const menuModal = document.getElementById('menu-link-modal');
+    const menuModalTitle = document.getElementById('menu-link-modal-title');
+    const menuModalIcon = document.getElementById('menu-link-modal-icon');
+    const menuModalList = document.getElementById('menu-link-modal-list');
+    const closeMenuModal = () => {
+      if (!menuModal) return;
+      menuModal.classList.add('hidden');
+      menuModal.classList.remove('flex');
+    };
+    const openMenuModal = (key) => {
+      const resource = menuResources[key];
+      if (!resource || !menuModal) return;
+      menuModalTitle.textContent = resource.title;
+      menuModalIcon.textContent = resource.icon;
+      menuModalList.replaceChildren();
+      resource.links.forEach(item => {
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className = 'flex items-center gap-3 rounded-xl border border-slate-700 bg-slate-800/70 p-3 hover:border-yellow-400/70 hover:bg-slate-800 transition-colors';
+        const icon = document.createElement('span');
+        icon.className = 'material-symbols-outlined text-yellow-400 text-[22px]';
+        icon.textContent = item.icon;
+        const textWrap = document.createElement('span');
+        textWrap.className = 'flex min-w-0 flex-1 flex-col';
+        const title = document.createElement('span');
+        title.className = 'text-sm font-bold text-white';
+        title.textContent = item.title;
+        const detail = document.createElement('span');
+        detail.className = 'text-xs text-slate-400';
+        detail.textContent = item.detail;
+        textWrap.append(title, detail);
+        const external = document.createElement('span');
+        external.className = 'material-symbols-outlined text-slate-400';
+        external.textContent = 'open_in_new';
+        link.append(icon, textWrap, external);
+        menuModalList.appendChild(link);
+      });
+      menuModal.classList.remove('hidden');
+      menuModal.classList.add('flex');
+    };
+
+    document.querySelectorAll('[data-path]').forEach(link => {
+      const key = link.getAttribute('data-path');
+      if (!menuResources[key]) return;
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        openMenuModal(key);
+      });
+    });
+    document.getElementById('menu-link-modal-close')?.addEventListener('click', closeMenuModal);
+    menuModal?.addEventListener('click', event => {
+      if (event.target === menuModal) closeMenuModal();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeMenuModal();
+    });
+
+    // Tarikh semasa dipaparkan secara dinamik dalam Bahasa Melayu.
+    function updateSchoolDate() {
+      const now = new Date();
+      const dateEl = document.getElementById('current-day-name');
+      const dayNumEl = document.getElementById('current-day-num');
+      const monthEl = document.querySelector('#current-day-num')?.previousElementSibling;
+      if (dateEl) dateEl.textContent = new Intl.DateTimeFormat('ms-MY', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      }).format(now);
+      if (dayNumEl) dayNumEl.textContent = String(now.getDate());
+      if (monthEl) monthEl.textContent = new Intl.DateTimeFormat('ms-MY', { month: 'short' }).format(now).replace('.', '').toUpperCase();
+    }
+    updateSchoolDate();
+  });
+</script></main>
+<div id="menu-link-modal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="menu-link-modal-title">
+  <div class="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-900 shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between gap-3 border-b border-slate-800 px-4 py-3">
+      <div class="flex items-center gap-2 min-w-0">
+        <span id="menu-link-modal-icon" class="material-symbols-outlined text-yellow-400 text-[22px]">apps</span>
+        <h2 id="menu-link-modal-title" class="font-bold text-white truncate">Pautan Portal</h2>
+      </div>
+      <button id="menu-link-modal-close" type="button" aria-label="Tutup pautan" class="rounded-lg p-2 text-slate-300 hover:bg-slate-800 hover:text-white">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div id="menu-link-modal-list" class="p-4 flex flex-col gap-2"></div>
+    <p class="px-4 pb-4 text-[11px] leading-relaxed text-slate-400">Pautan membuka laman luar. Gunakan akaun dan akses rasmi yang diberikan oleh pihak berkaitan.</p>
+  </div>
+</div>
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-slate-900/95 backdrop-blur-xl border-t border-slate-800 shadow-[0_-4px_16px_rgba(0,0,0,0.4)]" data-active-classes="text-yellow-400 font-bold"><div class="flex justify-between items-center h-16 px-gutter max-w-md md:max-w-xl mx-auto"><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-yellow-400 transition-colors" data-path="utama" href="#school-carousel"><span class="material-symbols-outlined text-[22px] drop-shadow-sm" style="font-variation-settings: 'FILL' 1;">home</span><span class="font-label-sm text-label-sm mt-0.5 font-bold">Utama</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-slate-400 hover:text-slate-200 transition-colors" data-path="pentadbiran" href="#menu-link-modal"><span class="material-symbols-outlined text-[22px]">admin_panel_settings</span><span class="font-label-sm text-label-sm mt-0.5">Pentadbiran</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-slate-400 hover:text-slate-200 transition-colors" data-path="kurikulum" href="#menu-link-modal"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm mt-0.5">Kurikulum</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-slate-400 hover:text-slate-200 transition-colors" data-path="hem" href="#menu-link-modal"><span class="material-symbols-outlined text-[22px]">groups</span><span class="font-label-sm text-label-sm mt-0.5">HEM</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-slate-400 hover:text-slate-200 transition-colors" data-path="kokurikulum" href="#menu-link-modal"><span class="material-symbols-outlined text-[22px]">sports_soccer</span><span class="font-label-sm text-label-sm mt-0.5">Kokurikulum</span></a></div></nav>
+
+
+
+
+</body></html>
