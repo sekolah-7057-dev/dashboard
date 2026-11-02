@@ -340,7 +340,7 @@
    [['action',action],['password',password],['requestId',requestId],['payload',payload?JSON.stringify(payload):'']].forEach(([name,value])=>{const input=document.createElement('input');input.name=name;input.value=value;form.append(input)});
    document.body.append(form);form.submit();form.remove();
  }
- const ADMIN_PASSWORD=''; // Kata laluan disahkan oleh backend, bukan dalam HTML.
+ const ADMIN_PASSWORD='XBA6115'; // Kata laluan disahkan oleh backend, bukan dalam HTML.
  const overlay=document.getElementById('admin-overlay'), loginArea=document.getElementById('admin-login-area'), editArea=document.getElementById('admin-edit-area');
  const open=()=>{overlay.classList.add('show');document.getElementById('admin-password').focus()};
  document.getElementById('admin-open')?.addEventListener('click',open);
