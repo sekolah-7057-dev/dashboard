@@ -306,7 +306,7 @@
 <div id="admin-overlay" role="dialog" aria-modal="true" aria-labelledby="admin-title">
  <section id="admin-panel">
   <div class="flex items-center justify-between gap-3 mb-4"><div><h2 id="admin-title" class="text-xl font-extrabold">Panel Admin SK Kimanis</h2><p class="text-xs text-slate-400 mt-1">Ubah gambar slaid, gambar Guru Besar dan amanat.</p></div><button id="admin-close" class="admin-secondary" type="button">Tutup</button></div>
-  <div id="admin-login-area"><label class="text-sm font-bold" for="admin-password">Kata laluan admin</label><input id="admin-password" class="admin-field" type="password" autocomplete="current-password" placeholder="Masukkan kata laluan"><p id="admin-error" class="text-sm text-rose-300 mt-2" aria-live="polite"></p><button id="admin-login" class="admin-action mt-3" type="button">Log Masuk</button><p class="text-xs text-slate-400 mt-3">Kata laluan sementara ditetapkan dalam kod HTML. Untuk keselamatan, gunakan Apps Script sebagai pengesahan sebelum diterbitkan.</p></div>
+  <div id="admin-login-area"><label class="text-sm font-bold" for="admin-password">Kata laluan admin</label><input id="admin-password" class="admin-field" type="password" autocomplete="current-password" placeholder="Masukkan kata laluan"><p id="admin-error" class="text-sm text-rose-300 mt-2" aria-live="polite"></p><button id="admin-login" class="admin-action mt-3" type="button">Log Masuk</button><p class="text-xs text-slate-400 mt-3">Kata laluan disahkan oleh Apps Script. Jika tiada respons, semak deployment Web App dan sambungan backend.</p></div>
   <form id="admin-edit-area" class="hidden space-y-4">
    <div><label class="text-sm font-bold" for="admin-principal-img">URL gambar Guru Besar (HTTPS)</label><input id="admin-principal-img" class="admin-field" type="url" placeholder="https://..."></div>
    <div><label class="text-sm font-bold" for="admin-message">Amanat Guru Besar</label><textarea id="admin-message" class="admin-field" rows="4"></textarea></div>
@@ -334,13 +334,16 @@
    let frame=document.getElementById(requestFrame);
    if(!frame){frame=document.createElement('iframe');frame.name=requestFrame;frame.id=requestFrame;frame.hidden=true;document.body.append(frame)}
    const requestId='req_'+Date.now()+'_'+Math.random().toString(36).slice(2);
-   const listener=e=>{if(e.data&&e.data.requestId===requestId){window.removeEventListener('message',listener);done(e.data)}};
+   let completed=false;
+   const finish=result=>{if(completed)return;completed=true;window.removeEventListener('message',listener);clearTimeout(timer);done(result)};
+   const listener=e=>{if(e.data&&e.data.requestId===requestId)finish(e.data)};
+   const timer=setTimeout(()=>finish({ok:false,error:'Tiada respons daripada Apps Script selepas 20 saat. Semak deployment Web App, akses dan URL GAS_URL, kemudian cuba lagi.'}),20000);
    window.addEventListener('message',listener);
    const form=document.createElement('form');form.method='POST';form.action=GAS_URL;form.target=requestFrame;form.style.display='none';
    [['action',action],['password',password],['requestId',requestId],['payload',payload?JSON.stringify(payload):'']].forEach(([name,value])=>{const input=document.createElement('input');input.name=name;input.value=value;form.append(input)});
    document.body.append(form);form.submit();form.remove();
  }
- const ADMIN_PASSWORD='XBA6115'; // Kata laluan disahkan oleh backend, bukan dalam HTML.
+ const ADMIN_PASSWORD=''; // Kata laluan disahkan oleh backend, bukan dalam HTML.
  const overlay=document.getElementById('admin-overlay'), loginArea=document.getElementById('admin-login-area'), editArea=document.getElementById('admin-edit-area');
  const open=()=>{overlay.classList.add('show');document.getElementById('admin-password').focus()};
  document.getElementById('admin-open')?.addEventListener('click',open);
