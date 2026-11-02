@@ -284,6 +284,12 @@
     <p class="px-4 pb-4 text-[11px] leading-relaxed text-slate-400">Pautan membuka laman luar. Gunakan akaun dan akses rasmi yang diberikan oleh pihak berkaitan.</p>
   </div>
 </div>
+<div id="apps-page" class="fixed inset-0 z-[80] hidden overflow-y-auto bg-slate-950 text-slate-100" role="dialog" aria-modal="true" aria-labelledby="apps-page-title">
+ <div class="min-h-full pb-24">
+  <header class="sticky top-0 z-10 border-b border-slate-800 bg-slate-900/95 backdrop-blur-xl"><div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4"><div class="flex min-w-0 items-center gap-3"><span id="apps-page-icon" class="material-symbols-outlined text-3xl text-yellow-400">apps</span><div class="min-w-0"><h2 id="apps-page-title" class="truncate text-lg font-extrabold">Aplikasi</h2><p class="text-xs text-slate-400">Pilih kad untuk membuka aplikasi</p></div></div><button id="apps-page-back" type="button" class="rounded-xl border border-slate-700 px-4 py-2 text-sm font-bold hover:border-yellow-400 hover:text-yellow-300">Kembali</button></div></header>
+  <main class="mx-auto w-full max-w-6xl px-4 py-6"><div id="apps-page-grid" class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"></div><p id="apps-page-empty" class="hidden py-12 text-center text-sm text-slate-400">Belum ada kad aplikasi untuk kategori ini.</p></main>
+ </div>
+</div>
 <nav class="fixed bottom-0 w-full z-50 pb-safe bg-slate-900/95 backdrop-blur-xl border-t border-slate-800 shadow-[0_-4px_16px_rgba(0,0,0,0.4)]" data-active-classes="text-yellow-400 font-bold"><div class="flex justify-between items-center h-16 px-gutter max-w-md md:max-w-3xl lg:max-w-6xl mx-auto"><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-yellow-400 transition-colors" data-path="utama" href="#school-carousel"><span class="material-symbols-outlined text-[22px] drop-shadow-sm" style="font-variation-settings: 'FILL' 1;">home</span><span class="font-label-sm text-label-sm mt-0.5 font-bold">Utama</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-slate-400 hover:text-slate-200 transition-colors" data-path="pentadbiran" href="#menu-link-modal"><span class="material-symbols-outlined text-[22px]">admin_panel_settings</span><span class="font-label-sm text-label-sm mt-0.5">Pentadbiran</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-slate-400 hover:text-slate-200 transition-colors" data-path="kurikulum" href="#menu-link-modal"><span class="material-symbols-outlined text-[22px]">menu_book</span><span class="font-label-sm text-label-sm mt-0.5">Kurikulum</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-slate-400 hover:text-slate-200 transition-colors" data-path="hem" href="#menu-link-modal"><span class="material-symbols-outlined text-[22px]">groups</span><span class="font-label-sm text-label-sm mt-0.5">HEM</span></a><a class="flex flex-col items-center justify-center min-w-[56px] h-12 text-slate-400 hover:text-slate-200 transition-colors" data-path="kokurikulum" href="#menu-link-modal"><span class="material-symbols-outlined text-[22px]">sports_soccer</span><span class="font-label-sm text-label-sm mt-0.5">Kokurikulum</span></a></div></nav>
 
 
@@ -305,6 +311,13 @@
    <div><label class="text-sm font-bold" for="admin-principal-img">URL gambar Guru Besar (HTTPS)</label><input id="admin-principal-img" class="admin-field" type="url" placeholder="https://..."></div>
    <div><label class="text-sm font-bold" for="admin-message">Amanat Guru Besar</label><textarea id="admin-message" class="admin-field" rows="4"></textarea></div>
    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="admin-slide-fields"></div>
+   <section class="rounded-xl border border-slate-700 bg-slate-900/70 p-3 space-y-3" id="admin-app-manager">
+    <div><h3 class="font-bold text-yellow-300">Pengurusan Kad Aplikasi</h3><p class="text-xs text-slate-400">Ubah nama, ikon Material Symbols dan pautan. URL tidak dipaparkan pada kad pengguna.</p></div>
+    <label class="text-sm font-bold" for="app-admin-category">Kategori menu</label><select id="app-admin-category" class="admin-field"><option value="pentadbiran">Pentadbiran</option><option value="kurikulum">Kurikulum</option><option value="hem">HEM</option><option value="kokurikulum">Kokurikulum</option></select>
+    <div id="app-admin-rows" class="space-y-3"></div>
+    <div class="flex flex-wrap gap-2"><button type="button" id="app-admin-add" class="admin-secondary">+ Tambah kad aplikasi</button><button type="button" id="app-admin-save" class="admin-action">Simpan kad aplikasi</button></div>
+    <p id="app-admin-status" class="text-sm text-emerald-300" aria-live="polite"></p>
+   </section>
    <div class="flex flex-wrap gap-2"><button class="admin-action" type="submit">Simpan perubahan</button><button id="admin-logout" class="admin-secondary" type="button">Log Keluar</button></div>
    <p id="admin-save-status" class="text-sm text-emerald-300" aria-live="polite"></p>
    <p class="text-xs text-slate-400">Simpanan HTML ini menggunakan storan pelayar peranti semasa. Untuk menyegerakkan perubahan kepada semua pelawat laman GitHub Pages, sambungkan backend Google Apps Script.</p>
@@ -313,7 +326,7 @@
 </div>
 <script>
 (()=>{
- const ADMIN_PASSWORD='XBA6115'; // Tukar kepada kata laluan pilihan sebelum penerbitan.
+ const ADMIN_PASSWORD='SKKimanisAdmin2026!'; // Tukar kepada kata laluan pilihan sebelum penerbitan.
  const overlay=document.getElementById('admin-overlay'), loginArea=document.getElementById('admin-login-area'), editArea=document.getElementById('admin-edit-area');
  const open=()=>{overlay.classList.add('show');document.getElementById('admin-password').focus()};
  document.getElementById('admin-open')?.addEventListener('click',open);
@@ -333,4 +346,27 @@
 })();
 </script>
 
+<script>
+(()=>{
+ const categories={
+  pentadbiran:{title:'Pentadbiran',icon:'admin_panel_settings',items:[{name:'Portal Rasmi KPM',icon:'account_balance',url:'https://www.moe.gov.my/laman-utama'},{name:'idMe KPM',icon:'verified_user',url:'https://idme.moe.gov.my/'}]},
+  kurikulum:{title:'Kurikulum',icon:'menu_book',items:[{name:'Portal Rasmi KPM',icon:'school',url:'https://www.moe.gov.my/laman-utama'},{name:'Takwim Persekolahan KPM',icon:'calendar_month',url:'https://www.moe.gov.my/takwim'}]},
+  hem:{title:'Hal Ehwal Murid',icon:'groups',items:[{name:'APDM',icon:'groups',url:'https://apdm.moe.gov.my/'},{name:'idMe KPM',icon:'verified_user',url:'https://idme.moe.gov.my/'}]},
+  kokurikulum:{title:'Kokurikulum',icon:'sports_soccer',items:[{name:'PAJSK KPM',icon:'sports',url:'https://pajsk.moe.gov.my/index.php'},{name:'Takwim Persekolahan KPM',icon:'calendar_month',url:'https://www.moe.gov.my/takwim'}]}
+ };
+ const storeKey='skKimanisAppCardsV1';
+ try{const saved=JSON.parse(localStorage.getItem(storeKey)||'null');if(saved&&typeof saved==='object')Object.keys(categories).forEach(k=>{if(Array.isArray(saved[k]))categories[k].items=saved[k]})}catch(e){}
+ const page=document.getElementById('apps-page'), grid=document.getElementById('apps-page-grid'), pageTitle=document.getElementById('apps-page-title'), pageIcon=document.getElementById('apps-page-icon');let active='pentadbiran';
+ function showCategory(k){if(!categories[k])return;active=k;pageTitle.textContent=categories[k].title;pageIcon.textContent=categories[k].icon;grid.replaceChildren();const items=categories[k].items.filter(x=>x&&x.name&&x.url);document.getElementById('apps-page-empty').classList.toggle('hidden',items.length>0);items.forEach(item=>{const a=document.createElement('a');a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.className='group flex min-h-36 flex-col items-center justify-center gap-3 rounded-2xl border border-slate-800 bg-slate-900 p-4 text-center shadow-lg transition hover:-translate-y-0.5 hover:border-yellow-400/70 hover:bg-slate-800 active:scale-95';const icon=document.createElement('span');icon.className='material-symbols-outlined text-4xl text-yellow-400 transition group-hover:scale-110';icon.textContent=item.icon||'apps';const name=document.createElement('span');name.className='text-sm font-bold leading-snug text-white group-hover:text-yellow-300';name.textContent=item.name;a.append(icon,name);a.title=item.name;grid.append(a)});page.classList.remove('hidden');document.body.style.overflow='hidden'}
+ function closePage(){page.classList.add('hidden');document.body.style.overflow=''}
+ document.getElementById('apps-page-back').addEventListener('click',closePage);page.addEventListener('click',e=>{if(e.target===page)closePage()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closePage()});
+ // Capture menu activation before the legacy modal handler; these links now open a dedicated page.
+ document.addEventListener('click',e=>{const link=e.target.closest('[data-path]');if(!link)return;const k=link.getAttribute('data-path');if(!categories[k])return;e.preventDefault();e.stopImmediatePropagation();showCategory(k)},true);
+ const select=document.getElementById('app-admin-category'), rows=document.getElementById('app-admin-rows');
+ function renderAdminRows(){rows.replaceChildren();categories[select.value].items.forEach((item,i)=>{const box=document.createElement('div');box.className='rounded-xl border border-slate-700 p-3 space-y-2';box.innerHTML=`<div class="flex items-center justify-between"><strong class="text-xs text-yellow-300">Kad ${i+1}</strong><button type="button" data-remove="${i}" class="text-xs font-bold text-rose-300">Buang</button></div><label class="block text-xs">Nama aplikasi<input class="admin-field" data-field="name" value=""></label><label class="block text-xs">Nama ikon Material Symbols<input class="admin-field" data-field="icon" value=""></label><label class="block text-xs">Pautan URL (tidak dipaparkan kepada pelawat)<input class="admin-field" data-field="url" type="url" placeholder="https://..."></label>`;box.querySelector('[data-field="name"]').value=item.name||'';box.querySelector('[data-field="icon"]').value=item.icon||'apps';box.querySelector('[data-field="url"]').value=item.url||'';box.querySelector('[data-remove]').addEventListener('click',()=>{readAdminRows();categories[select.value].items.splice(i,1);renderAdminRows()});rows.append(box)})}
+ function readAdminRows(){categories[select.value].items=[...rows.children].map(box=>({name:box.querySelector('[data-field="name"]').value.trim(),icon:box.querySelector('[data-field="icon"]').value.trim()||'apps',url:box.querySelector('[data-field="url"]').value.trim()})).filter(x=>x.name||x.url)}
+ select.addEventListener('change',renderAdminRows);document.getElementById('app-admin-add').addEventListener('click',()=>{readAdminRows();categories[select.value].items.push({name:'Aplikasi baharu',icon:'apps',url:''});renderAdminRows()});document.getElementById('app-admin-save').addEventListener('click',()=>{readAdminRows();try{localStorage.setItem(storeKey,JSON.stringify(categories));document.getElementById('app-admin-status').textContent='Kad aplikasi disimpan pada pelayar ini.'}catch(e){document.getElementById('app-admin-status').textContent='Tidak berjaya menyimpan.'}});
+ renderAdminRows();
+})();
+</script>
 </body></html>
