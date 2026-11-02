@@ -383,7 +383,7 @@
   kokurikulum:{title:'Kokurikulum',icon:'sports_soccer',items:[{name:'PAJSK KPM',icon:'sports',url:'https://pajsk.moe.gov.my/index.php'},{name:'Takwim Persekolahan KPM',icon:'calendar_month',url:'https://www.moe.gov.my/takwim'}]}
  };
  const storeKey='skKimanisAppCardsV1';
- const GAS_URL='PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+ const GAS_URL='https://script.google.com/macros/s/AKfycbwjxwzX4HXCs3XknnWlc0e3WGl7hWu2N9Oq1IuUN3fXpYVfHGP9o5vY90I2Jvyoj4SG/exec';
  function applySharedApps(saved){if(saved&&typeof saved==='object')Object.keys(categories).forEach(k=>{if(saved[k]&&Array.isArray(saved[k].items))categories[k]={title:saved[k].title||categories[k].title,icon:saved[k].icon||categories[k].icon,items:saved[k].items}});renderAdminRows();if(!page.classList.contains('hidden'))showCategory(active)}
  function loadSharedApps(){
    if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(GAS_URL))return;
