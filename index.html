@@ -320,13 +320,27 @@
    </section>
    <div class="flex flex-wrap gap-2"><button class="admin-action" type="submit">Simpan perubahan</button><button id="admin-logout" class="admin-secondary" type="button">Log Keluar</button></div>
    <p id="admin-save-status" class="text-sm text-emerald-300" aria-live="polite"></p>
-   <p class="text-xs text-slate-400">Simpanan HTML ini menggunakan storan pelayar peranti semasa. Untuk menyegerakkan perubahan kepada semua pelawat laman GitHub Pages, sambungkan backend Google Apps Script.</p>
+   <p class="text-xs text-slate-400">Suntingan kad aplikasi disimpan pada Google Apps Script dan dipaparkan kepada semua pelawat selepas berjaya disimpan. Tetapkan URL Web App dalam GAS_URL pada kedua-dua skrip sebelum penerbitan.</p>
   </form>
  </section>
 </div>
 <script>
 (()=>{
- const ADMIN_PASSWORD='SKKimanisAdmin2026!'; // Tukar kepada kata laluan pilihan sebelum penerbitan.
+ const GAS_URL='PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE'; // URL Web App /exec
+ const requestFrame='sk-kimanis-admin-post-frame';
+ function backendReady(){return /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(GAS_URL)}
+ function postBackend(action,password,payload,done){
+   if(!backendReady()){done({ok:false,error:'Sila tetapkan URL Google Apps Script Web App dalam GAS_URL.'});return}
+   let frame=document.getElementById(requestFrame);
+   if(!frame){frame=document.createElement('iframe');frame.name=requestFrame;frame.id=requestFrame;frame.hidden=true;document.body.append(frame)}
+   const requestId='req_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+   const listener=e=>{if(e.data&&e.data.requestId===requestId){window.removeEventListener('message',listener);done(e.data)}};
+   window.addEventListener('message',listener);
+   const form=document.createElement('form');form.method='POST';form.action=GAS_URL;form.target=requestFrame;form.style.display='none';
+   [['action',action],['password',password],['requestId',requestId],['payload',payload?JSON.stringify(payload):'']].forEach(([name,value])=>{const input=document.createElement('input');input.name=name;input.value=value;form.append(input)});
+   document.body.append(form);form.submit();form.remove();
+ }
+ const ADMIN_PASSWORD=''; // Kata laluan disahkan oleh backend, bukan dalam HTML.
  const overlay=document.getElementById('admin-overlay'), loginArea=document.getElementById('admin-login-area'), editArea=document.getElementById('admin-edit-area');
  const open=()=>{overlay.classList.add('show');document.getElementById('admin-password').focus()};
  document.getElementById('admin-open')?.addEventListener('click',open);
@@ -338,10 +352,24 @@
  const fields=document.getElementById('admin-slide-fields');
  slideImages.forEach((img,i)=>{const wrap=document.createElement('div');wrap.innerHTML=`<label class="text-sm font-bold" for="admin-slide-${i}">URL gambar slaid ${i+1}</label><input id="admin-slide-${i}" class="admin-field" type="url" placeholder="https://...">`;fields.append(wrap)});
  const key='skKimanisPortalContent';
- function apply(data){if(data.principalImage&&principalImage)principalImage.src=data.principalImage;if(data.message&&messageNode)messageNode.textContent=data.message;(data.slides||[]).forEach((url,i)=>{if(url&&slideImages[i])slideImages[i].src=url})}
- try{const saved=JSON.parse(localStorage.getItem(key)||'{}');apply(saved)}catch(e){}
- document.getElementById('admin-login').addEventListener('click',()=>{if(document.getElementById('admin-password').value===ADMIN_PASSWORD){loginArea.classList.add('hidden');editArea.classList.remove('hidden');document.getElementById('admin-error').textContent='';let data={};try{data=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){};document.getElementById('admin-principal-img').value=data.principalImage||(principalImage?.src||'');document.getElementById('admin-message').value=data.message||(messageNode?.textContent||'');slideImages.forEach((img,i)=>document.getElementById('admin-slide-'+i).value=(data.slides||[])[i]||img.src)}else document.getElementById('admin-error').textContent='Kata laluan tidak tepat.'});
- editArea.addEventListener('submit',e=>{e.preventDefault();const data={principalImage:document.getElementById('admin-principal-img').value.trim(),message:document.getElementById('admin-message').value.trim(),slides:slideImages.map((img,i)=>document.getElementById('admin-slide-'+i).value.trim())};try{localStorage.setItem(key,JSON.stringify(data));apply(data);document.getElementById('admin-save-status').textContent='Perubahan disimpan pada pelayar ini.'}catch(err){document.getElementById('admin-save-status').textContent='Tidak berjaya menyimpan dalam pelayar.'}});
+ function normalizeContent(data){return {principalImage:data.principal||data.principalImage||'',message:data.message||'',slides:(data.slides||[]).map(x=>typeof x==='string'?x:(x&&x.image)||'')}}
+ function apply(data){const normalized=normalizeContent(data||{});if(normalized.principalImage&&principalImage)principalImage.src=normalized.principalImage;if(normalized.message&&messageNode)messageNode.textContent=normalized.message;normalized.slides.forEach((url,i)=>{if(url&&slideImages[i])slideImages[i].src=url})}
+ function loadContent(done){if(!backendReady()){done({});return}const cb='skContentCb_'+Date.now();window[cb]=data=>{delete window[cb];script.remove();done(data||{})};const script=document.createElement('script');script.src=GAS_URL+'?action=read&callback='+cb;script.onerror=()=>{delete window[cb];script.remove();done({})};document.head.append(script)}
+ loadContent(apply);
+ document.getElementById('admin-login').addEventListener('click',()=>{
+   const pass=document.getElementById('admin-password').value;
+   postBackend('login',pass,null,result=>{
+     if(result.ok){loginArea.classList.add('hidden');editArea.classList.remove('hidden');document.getElementById('admin-error').textContent='';
+       loadContent(data=>{const normalized=normalizeContent(data);
+         document.getElementById('admin-principal-img').value=normalized.principalImage||(principalImage?.src||'');
+         document.getElementById('admin-message').value=normalized.message||(messageNode?.textContent||'');
+         slideImages.forEach((img,i)=>document.getElementById('admin-slide-'+i).value=normalized.slides[i]||img.src);
+         window.dispatchEvent(new Event('sk-kimanis-admin-authenticated'));
+       });
+     }else document.getElementById('admin-error').textContent=result.error||'Login gagal. Semak URL backend dan kata laluan.';
+   });
+ });
+ editArea.addEventListener('submit',e=>{e.preventDefault();const status=document.getElementById('admin-save-status');const slideTitles=['Pintu Masuk & Mercu Tanda','Warga Pendidik & Pelajar Kohort 2015','Aktiviti Memanah & Kokurikulum','Program Kebajikan & Komuniti SEC'];const currentSlides=slideImages.map((img,i)=>({title:slideTitles[i]||('Slaid '+(i+1)),image:document.getElementById('admin-slide-'+i).value.trim()}));const data={principal:document.getElementById('admin-principal-img').value.trim(),message:document.getElementById('admin-message').value.trim(),slides:currentSlides};status.textContent='Menyimpan amanat dan gambar ke pangkalan data bersama…';const pass=document.getElementById('admin-password').value;postBackend('save',pass,data,result=>{if(result.ok){apply(data);status.textContent='Berjaya disimpan. Amanat dan gambar terkini akan dipaparkan kepada semua pelawat.'}else status.textContent=result.error||'Gagal menyimpan kandungan.'})});
  document.getElementById('admin-logout').addEventListener('click',()=>{editArea.classList.add('hidden');loginArea.classList.remove('hidden');document.getElementById('admin-password').value=''});
 })();
 </script>
@@ -355,7 +383,14 @@
   kokurikulum:{title:'Kokurikulum',icon:'sports_soccer',items:[{name:'PAJSK KPM',icon:'sports',url:'https://pajsk.moe.gov.my/index.php'},{name:'Takwim Persekolahan KPM',icon:'calendar_month',url:'https://www.moe.gov.my/takwim'}]}
  };
  const storeKey='skKimanisAppCardsV1';
- try{const saved=JSON.parse(localStorage.getItem(storeKey)||'null');if(saved&&typeof saved==='object')Object.keys(categories).forEach(k=>{if(Array.isArray(saved[k]))categories[k].items=saved[k]})}catch(e){}
+ const GAS_URL='PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+ function applySharedApps(saved){if(saved&&typeof saved==='object')Object.keys(categories).forEach(k=>{if(saved[k]&&Array.isArray(saved[k].items))categories[k]={title:saved[k].title||categories[k].title,icon:saved[k].icon||categories[k].icon,items:saved[k].items}});renderAdminRows();if(!page.classList.contains('hidden'))showCategory(active)}
+ function loadSharedApps(){
+   if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(GAS_URL))return;
+   const cb='skAppsCb_'+Date.now();window[cb]=data=>{applySharedApps(data);delete window[cb];script.remove()};
+   const script=document.createElement('script');script.src=GAS_URL+'?action=apps&callback='+cb;script.onerror=()=>{delete window[cb];script.remove()};document.head.append(script)
+ }
+ loadSharedApps();
  const page=document.getElementById('apps-page'), grid=document.getElementById('apps-page-grid'), pageTitle=document.getElementById('apps-page-title'), pageIcon=document.getElementById('apps-page-icon');let active='pentadbiran';
  function showCategory(k){if(!categories[k])return;active=k;pageTitle.textContent=categories[k].title;pageIcon.textContent=categories[k].icon;grid.replaceChildren();const items=categories[k].items.filter(x=>x&&x.name&&x.url);document.getElementById('apps-page-empty').classList.toggle('hidden',items.length>0);items.forEach(item=>{const a=document.createElement('a');a.href=item.url;a.target='_blank';a.rel='noopener noreferrer';a.className='group flex min-h-36 flex-col items-center justify-center gap-3 rounded-2xl border border-slate-800 bg-slate-900 p-4 text-center shadow-lg transition hover:-translate-y-0.5 hover:border-yellow-400/70 hover:bg-slate-800 active:scale-95';const icon=document.createElement('span');icon.className='material-symbols-outlined text-4xl text-yellow-400 transition group-hover:scale-110';icon.textContent=item.icon||'apps';const name=document.createElement('span');name.className='text-sm font-bold leading-snug text-white group-hover:text-yellow-300';name.textContent=item.name;a.append(icon,name);a.title=item.name;grid.append(a)});page.classList.remove('hidden');document.body.style.overflow='hidden'}
  function closePage(){page.classList.add('hidden');document.body.style.overflow=''}
@@ -365,7 +400,18 @@
  const select=document.getElementById('app-admin-category'), rows=document.getElementById('app-admin-rows');
  function renderAdminRows(){rows.replaceChildren();categories[select.value].items.forEach((item,i)=>{const box=document.createElement('div');box.className='rounded-xl border border-slate-700 p-3 space-y-2';box.innerHTML=`<div class="flex items-center justify-between"><strong class="text-xs text-yellow-300">Kad ${i+1}</strong><button type="button" data-remove="${i}" class="text-xs font-bold text-rose-300">Buang</button></div><label class="block text-xs">Nama aplikasi<input class="admin-field" data-field="name" value=""></label><label class="block text-xs">Nama ikon Material Symbols<input class="admin-field" data-field="icon" value=""></label><label class="block text-xs">Pautan URL (tidak dipaparkan kepada pelawat)<input class="admin-field" data-field="url" type="url" placeholder="https://..."></label>`;box.querySelector('[data-field="name"]').value=item.name||'';box.querySelector('[data-field="icon"]').value=item.icon||'apps';box.querySelector('[data-field="url"]').value=item.url||'';box.querySelector('[data-remove]').addEventListener('click',()=>{readAdminRows();categories[select.value].items.splice(i,1);renderAdminRows()});rows.append(box)})}
  function readAdminRows(){categories[select.value].items=[...rows.children].map(box=>({name:box.querySelector('[data-field="name"]').value.trim(),icon:box.querySelector('[data-field="icon"]').value.trim()||'apps',url:box.querySelector('[data-field="url"]').value.trim()})).filter(x=>x.name||x.url)}
- select.addEventListener('change',renderAdminRows);document.getElementById('app-admin-add').addEventListener('click',()=>{readAdminRows();categories[select.value].items.push({name:'Aplikasi baharu',icon:'apps',url:''});renderAdminRows()});document.getElementById('app-admin-save').addEventListener('click',()=>{readAdminRows();try{localStorage.setItem(storeKey,JSON.stringify(categories));document.getElementById('app-admin-status').textContent='Kad aplikasi disimpan pada pelayar ini.'}catch(e){document.getElementById('app-admin-status').textContent='Tidak berjaya menyimpan.'}});
+ select.addEventListener('change',renderAdminRows);document.getElementById('app-admin-add').addEventListener('click',()=>{readAdminRows();categories[select.value].items.push({name:'Aplikasi baharu',icon:'apps',url:''});renderAdminRows()});
+ document.getElementById('app-admin-save').addEventListener('click',()=>{
+   readAdminRows();const status=document.getElementById('app-admin-status');status.textContent='Menyimpan ke pangkalan data bersama…';
+   const password=document.getElementById('admin-password').value;
+   const frameName='sk-kimanis-admin-post-frame';
+   let frame=document.getElementById(frameName);if(!frame){frame=document.createElement('iframe');frame.name=frameName;frame.id=frameName;frame.hidden=true;document.body.append(frame)}
+   const req='apps_'+Date.now()+'_'+Math.random().toString(36).slice(2);
+   const handler=e=>{if(e.data&&e.data.requestId===req){window.removeEventListener('message',handler);status.textContent=e.data.ok?'Berjaya disimpan. Semua pelawat akan melihat kad aplikasi yang dikemas kini.':(e.data.error||'Gagal menyimpan.')}};window.addEventListener('message',handler);
+   const endpoint=GAS_URL; if(!/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(endpoint)){window.removeEventListener('message',handler);status.textContent='Sila tetapkan URL Google Apps Script Web App pada GAS_URL.';return}
+   const form=document.createElement('form');form.method='POST';form.action=endpoint;form.target=frameName;form.hidden=true;
+   [['action','saveApps'],['password',password],['requestId',req],['payload',JSON.stringify(categories)]].forEach(([name,value])=>{const input=document.createElement('input');input.name=name;input.value=value;form.append(input)});document.body.append(form);form.submit();form.remove()
+ });
  renderAdminRows();
 })();
 </script>
