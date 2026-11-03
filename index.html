@@ -573,4 +573,71 @@ main > div.flex.flex-col.w-full.pb-8 > * {
 .weather-card.weather-storm::before { background: radial-gradient(ellipse at 78% 18%, rgba(179,191,214,.3), transparent 36%), linear-gradient(115deg, rgba(16,19,42,.99), rgba(56,61,88,.85), rgba(6,12,27,.99)); }
 .weather-card > * { position:relative; }
 </style>
-</body></html>
+<style id="final-weather-ipu-fix">
+/* Hard override: equal, compact card heights */
+.weather-ipu-grid {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:12px !important;
+  align-items:stretch !important;
+}
+.weather-ipu-grid #weather-card,
+.weather-ipu-grid #ipu-card {
+  height:108px !important;
+  min-height:108px !important;
+  max-height:108px !important;
+  padding:10px !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+.weather-ipu-grid #weather-card::before,
+.weather-ipu-grid #weather-card::after {
+  content:none !important;
+  display:none !important;
+  background:none !important;
+}
+.weather-ipu-grid #weather-card {
+  background-color:#0f172a !important;
+  background-image:none !important;
+}
+.weather-ipu-grid #weather-card .relative.z-10,
+.weather-ipu-grid #ipu-card .relative.z-10 {
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  text-align:center !important;
+}
+.weather-ipu-grid #weather-card .weather-image-wrap {
+  width:54px !important;
+  height:54px !important;
+  flex:0 0 54px !important;
+}
+.weather-ipu-grid #weather-card .min-w-0,
+.weather-ipu-grid #ipu-card .min-w-0 {
+  min-width:0 !important;
+  text-align:center !important;
+}
+.weather-ipu-grid #weather-card #weather-status,
+.weather-ipu-grid #ipu-card .text-[11px] {
+  display:block !important;
+  text-align:center !important;
+}
+@media(max-width:380px) {
+  .weather-ipu-grid #weather-card,
+  .weather-ipu-grid #ipu-card {
+    height:100px !important;
+    min-height:100px !important;
+    max-height:100px !important;
+  }
+  .weather-ipu-grid #weather-card .weather-image-wrap {
+    width:46px !important;
+    height:46px !important;
+    flex-basis:46px !important;
+  }
+}
+</style></body></html>
