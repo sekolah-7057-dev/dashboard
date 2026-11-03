@@ -22,13 +22,37 @@
 .weather-ipu-grid > #ipu-card {
   width: 100%;
   min-width: 0;
-  min-height: 100px;
-  height: 90%;
+  min-height: 132px;
+  height: 100%;
   box-sizing: border-box;
 }
 @media (max-width: 380px) {
   .weather-ipu-grid > #weather-card,
   .weather-ipu-grid > #ipu-card { min-height: 148px; }
+}
+
+/* Teks kad suhu dan IPU berada di tengah, dengan susun atur ikon + teks */
+.weather-ipu-grid > #weather-card,
+.weather-ipu-grid > #ipu-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.weather-ipu-grid > #weather-card > .relative.z-10,
+.weather-ipu-grid > #ipu-card > .relative.z-10 {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+.weather-ipu-grid > #weather-card .min-w-0,
+.weather-ipu-grid > #ipu-card .min-w-0 {
+  min-width: 0;
+  text-align: center;
+}
+.weather-ipu-grid > #weather-card #weather-status,
+.weather-ipu-grid > #ipu-card .text-[11px] {
+  display: block;
+  text-align: center;
 }
 </style><style>
     body {
