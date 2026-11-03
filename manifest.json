@@ -1,0 +1,14 @@
+{
+  "name": "Portal SK Kimanis",
+  "short_name": "SK Kimanis",
+  "description": "Portal rasmi SK Kimanis, Papar, Sabah",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {"src": "https://lh3.googleusercontent.com/aida-public/AB6AXuCkKxO8qjRsPw1gr1XPvVXicyVAF0WGfaJDGnw2ncZ9tiff6b9q1oHyRcQzChYlK4NxJHBA5aidIQZhq7ZgkrT78CFh5bFdK1fLosHm5GD3lYVH5yFRO6U8S1W_NjsdP-LZwuepdE0VmevSx-LVCXEovZHg0SxoEuR5gcfW7eOO8w3X1uJ6HzgDIZXrbsYWSxbQ6_FQ8mD2tl_gIupcH6_4gzHYNFuLOoGUvvAVQD3qZdtEhpo5pWXa", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "https://lh3.googleusercontent.com/aida-public/AB6AXuCkKxO8qjRsPw1gr1XPvVXicyVAF0WGfaJDGnw2ncZ9tiff6b9q1oHyRcQzChYlK4NxJHBA5aidIQZhq7ZgkrT78CFh5bFdK1fLosHm5GD3lYVH5yFRO6U8S1W_NjsdP-LZwuepdE0VmevSx-LVCXEovZHg0SxoEuR5gcfW7eOO8w3X1uJ6HzgDIZXrbsYWSxbQ6_FQ8mD2tl_gIupcH6_4gzHYNFuLOoGUvvAVQD3qZdtEhpo5pWXa", "sizes": "512x512", "type": "image/png", "purpose": "any"}
+  ]
+}
