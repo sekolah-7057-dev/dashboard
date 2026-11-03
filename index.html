@@ -24,22 +24,38 @@
 #apps-page .apps-category-header:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,23,42,.92),rgba(15,23,42,.68));pointer-events:none}
 #apps-page .apps-category-header>div{position:relative;z-index:1}
 </style><style id="eman-layout-alignment-fix">
-/* Consistent centered width for home dashboard cards */
-@media (min-width: 768px) {
-  .eman-home-card-align { width: min(100% - 24px, 1240px) !important; max-width: 1240px !important; margin-left: auto !important; margin-right: auto !important; box-sizing: border-box !important; }
+/* Selaraskan lebar semua kad utama dalam dashboard; kekalkan grid menu 2 kolum. */
+:root { --eman-content-width: 1240px; --eman-page-gutter: 16px; }
+.eman-dashboard-card-align {
+  width: min(calc(100% - 2 * var(--eman-page-gutter)), var(--eman-content-width)) !important;
+  max-width: var(--eman-content-width) !important;
+  margin-left: auto !important; margin-right: auto !important;
+  box-sizing: border-box !important; flex-shrink: 0;
 }
 @media (max-width: 767px) {
-  .eman-home-card-align { width: calc(100% - 24px) !important; max-width: 100% !important; margin-left: auto !important; margin-right: auto !important; box-sizing: border-box !important; }
+  :root { --eman-page-gutter: 12px; }
+  .eman-dashboard-card-align { width: calc(100% - 24px) !important; max-width: 100% !important; }
 }
-.eman-home-card-align { flex-shrink: 0; }
+/* Pastikan bekas grid menu juga sejajar dengan kad-kad di atasnya. */
+.home-feature-cards, .main-feature-cards { width:100%; max-width:100%; box-sizing:border-box; }
 </style>
 <script id="eman-layout-alignment-fix-script">
 document.addEventListener('DOMContentLoaded', function(){
-  const selectors = ['Amanat Guru Besar','Suhu & IPU','Takwim Persekolahan KPM'];
-  const candidates = Array.from(document.querySelectorAll('div,section,a'));
-  selectors.forEach(label => {
-    const node = candidates.find(el => el.children.length < 8 && (el.innerText || '').includes(label));
-    if(node) node.classList.add('eman-home-card-align');
+  const labels = ['Amanat Guru Besar','Takwim Persekolahan KPM','Suhu & IPU'];
+  labels.forEach(function(label){
+    const all = Array.from(document.querySelectorAll('body *'));
+    const leaf = all.find(function(el){
+      return el.children.length === 0 && (el.textContent || '').trim().includes(label);
+    });
+    if (!leaf) return;
+    let card = leaf;
+    for (let i=0; i<10 && card && card !== document.body; i++, card=card.parentElement) {
+      const cls = typeof card.className === 'string' ? card.className : '';
+      if ((cls.includes('rounded') && (cls.includes('border') || cls.includes('bg-'))) || card.tagName === 'A') {
+        card.classList.add('eman-dashboard-card-align');
+        break;
+      }
+    }
   });
 });
 </script></head><body class="bg-slate-950 font-body-md text-body-md text-slate-100 antialiased flex flex-col min-h-screen" data-mode="connect"><header class="fixed top-0 w-full z-50 pt-safe bg-slate-900/90 backdrop-blur-xl border-b border-slate-800 shadow-md"><div class="h-16 px-4 flex items-center justify-between max-w-md md:max-w-3xl lg:max-w-6xl mx-auto"><div class="flex items-center gap-3 min-w-0"><img alt="Logo SK Kimanis" class="h-10 w-auto object-contain shrink-0 drop-shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkKxO8qjRsPw1gr1XPvVXicyVAF0WGfaJDGnw2ncZ9tiff6b9q1oHyRcQzChYlK4NxJHBA5aidIQZhq7ZgkrT78CFh5bFdK1fLosHm5GD3lYVH5yFRO6U8S1W_NjsdP-LZwuepdE0VmevSx-LVCXEovZHg0SxoEuR5gcfW7eOO8w3X1uJ6HzgDIZXrbsYWSxbQ6_FQ8mD2tl_gIupcH6_4gzHYNFuLOoGUvvAVQD3qZdtEhpo5pWXa"><div class="flex flex-col min-w-0"><span class="font-headline-md text-[16px] text-white font-bold tracking-wide leading-none truncate">SK KIMANIS</span><span class="text-[11px] text-slate-400 font-medium tracking-wide leading-tight truncate">Papar, Sabah • Kod: <strong class="text-yellow-400 font-bold">XBA6115</strong></span></div></div><div class="flex items-center gap-2 shrink-0"><button id="admin-open" type="button" class="rounded-full border border-yellow-400/50 px-3 py-2 text-[11px] font-bold text-yellow-300 hover:bg-yellow-400 hover:text-slate-950" aria-label="Login Admin">Admin</button><span class="px-3 py-1 rounded-full bg-yellow-400 text-slate-950 font-label-sm text-[11px] font-extrabold inline-flex items-center gap-1.5 shadow-md shadow-yellow-400/20"><span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse"></span><span class="">Aktif</span></span></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-slate-950 min-h-screen"><div class="flex flex-col w-full pb-8"><!-- Hero Banner / Interaktif Slaid Carousel dengan Crossfade & Ken Burns Zoom -->
