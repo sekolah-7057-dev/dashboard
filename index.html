@@ -444,6 +444,12 @@ main > div.flex.flex-col.w-full.pb-8 > * {
     <div class="flex flex-wrap gap-2"><button type="button" id="app-admin-add" class="admin-secondary">+ Tambah kad aplikasi</button><button type="button" id="app-admin-save" class="admin-action">Simpan kad aplikasi</button></div>
     <p id="app-admin-status" class="text-sm text-emerald-300" aria-live="polite"></p>
    </section>
+   <section class="rounded-xl border border-slate-700 bg-slate-900/70 p-3 space-y-3" id="admin-main-links">
+    <div><h3 class="font-bold text-yellow-300">URL Kad Pengurusan</h3><p class="text-xs text-slate-400">Tetapkan pautan bagi setiap kad. Pautan ini dibuka apabila kad dipilih; navigasi Menu Utama di bawah tidak berubah.</p></div>
+    <div id="admin-main-link-fields" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+    <button type="button" id="admin-main-links-save" class="admin-action">Simpan URL kad</button>
+    <p id="admin-main-links-status" class="text-sm text-emerald-300" aria-live="polite"></p>
+   </section>
    <div class="flex flex-wrap gap-2"><button class="admin-action" type="submit">Simpan perubahan</button><button id="admin-logout" class="admin-secondary" type="button">Log Keluar</button></div>
    <p id="admin-save-status" class="text-sm text-emerald-300" aria-live="polite"></p>
    <p class="text-xs text-slate-400">Suntingan kad aplikasi disimpan pada Google Apps Script dan dipaparkan kepada semua pelawat selepas berjaya disimpan. Tetapkan URL Web App dalam GAS_URL pada kedua-dua skrip sebelum penerbitan.</p>
@@ -687,6 +693,46 @@ main > div.flex.flex-col.w-full.pb-8 > * {
   };
   renderDate();
   setInterval(renderDate, 60000);
+})();
+</script>
+<script id="admin-main-links-script">
+(()=>{
+ const GAS_URL='https://script.google.com/macros/s/AKfycbwjxwzX4HXCs3XknnWlc0e3WGl7hWu2N9Oq1IuUN3fXpYVfHGP9o5vY90I2Jvyoj4SG/exec';
+ const keys=['pentadbiran','kurikulum','hem','kokurikulum'];
+ const names=['Pentadbiran Pengurusan Am','Kurikulum Akademik & e-RPH','Hal Ehwal Murid APDM & Kebajikan','Kokurikulum PAJSK & Sukan'];
+ const fallback=['https://www.moe.gov.my/laman-utama','https://www.moe.gov.my/laman-utama','https://apdm.moe.gov.my/','https://pajsk.moe.gov.my/index.php'];
+ const mainHeading=[...document.querySelectorAll('h2')].find(el=>el.textContent.trim()==='Pengurusan');
+ const cardWrap=mainHeading?.parentElement?.parentElement?.querySelector('.grid');
+ const cards=cardWrap?[...cardWrap.querySelectorAll('a')]:[];
+ const fields=document.getElementById('admin-main-link-fields');
+ if(!fields||cards.length!==4)return;
+ names.forEach((name,i)=>{const label=document.createElement('label');label.className='text-sm font-bold';label.textContent=name;
+  const input=document.createElement('input');input.type='url';input.id='admin-main-link-'+i;input.className='admin-field';input.placeholder='https://...';input.dataset.key=keys[i];
+  const wrap=document.createElement('div');wrap.append(label,input);fields.append(wrap)});
+ let urls=fallback.slice();
+ function apply(data){if(data&&typeof data==='object')urls=keys.map((k,i)=>String(data[k]||fallback[i]));
+  cards.forEach((card,i)=>{card.dataset.adminUrl=urls[i]||'';card.href=urls[i]||'#menu-link-modal';card.target=urls[i]?'_blank':'';card.rel=urls[i]?'noopener noreferrer':'';});
+  keys.forEach((k,i)=>{const input=document.getElementById('admin-main-link-'+i);if(input)input.value=urls[i]||'';});
+ }
+ function load(){const cb='mainLinksCb_'+Date.now();window[cb]=data=>{apply(data);delete window[cb];script.remove()};
+  const script=document.createElement('script');script.src=GAS_URL+'?action=mainCards&callback='+cb;script.onerror=()=>{delete window[cb];script.remove();apply(null)};document.head.append(script)}
+ load();
+ cards.forEach((card,i)=>card.addEventListener('click',e=>{const url=card.dataset.adminUrl;if(url){e.preventDefault();e.stopImmediatePropagation();window.open(url,'_blank','noopener');}},true));
+ document.getElementById('admin-main-links-save')?.addEventListener('click',()=>{
+  const status=document.getElementById('admin-main-links-status');const pass=document.getElementById('admin-password')?.value||'';
+  const payload={};let valid=true;
+  keys.forEach((k,i)=>{const val=document.getElementById('admin-main-link-'+i).value.trim();if(!/^https?:\/\/\S+$/i.test(val)){valid=false}payload[k]=val});
+  if(!valid){status.textContent='Sila masukkan URL http/https yang sah untuk keempat-empat kad.';return}
+  status.textContent='Menyimpan URL kad…';const frameName='sk-kimanis-admin-post-frame';let frame=document.getElementById(frameName);
+  if(!frame){frame=document.createElement('iframe');frame.name=frameName;frame.id=frameName;frame.hidden=true;document.body.append(frame)}
+  const requestId='mainlinks_'+Date.now();let done=false;
+  const finish=result=>{if(done)return;done=true;window.removeEventListener('message',listener);clearTimeout(timer);if(result.ok){apply(payload);status.textContent='URL kad berjaya disimpan.'}else status.textContent=result.error||'Gagal menyimpan URL.'};
+  const listener=e=>{if(e.data&&e.data.requestId===requestId)finish(e.data)};
+  const timer=setTimeout(()=>finish({ok:false,error:'Tiada respons daripada Apps Script.'}),20000);window.addEventListener('message',listener);
+  const form=document.createElement('form');form.method='POST';form.action=GAS_URL;form.target=frameName;form.style.display='none';
+  [['action','saveMainCards'],['password',pass],['requestId',requestId],['payload',JSON.stringify(payload)]].forEach(([n,v])=>{const inp=document.createElement('input');inp.name=n;inp.value=v;form.append(inp)});
+  document.body.append(form);form.submit();form.remove();
+ });
 })();
 </script>
 </body></html>
