@@ -538,6 +538,15 @@ main > div.flex.flex-col.w-full.pb-8 > * {
  document.addEventListener('click',e=>{
    const link=e.target.closest('[data-path]');if(!link)return;
    const key=link.getAttribute('data-path');
+   // Kad Pengurusan utama mesti mengutamakan URL admin, bukan paparan dalaman.
+   if(link.dataset.isManagementCard==='true'){
+     const destination=(link.dataset.adminUrl||'').trim();
+     if(destination){
+       e.preventDefault();e.stopPropagation();e.stopImmediatePropagation();
+       window.open(destination,'_blank','noopener,noreferrer');
+       return;
+     }
+   }
    if(key==='utama'){e.preventDefault();e.stopImmediatePropagation();closePage();setActiveNav('utama');document.getElementById('school-carousel')?.scrollIntoView({behavior:'smooth',block:'start'});return;}
    if(!categories[key])return;
    e.preventDefault();e.stopImmediatePropagation();setActiveNav(key);showCategory(key);
@@ -705,6 +714,7 @@ main > div.flex.flex-col.w-full.pb-8 > * {
  const heading=[...document.querySelectorAll('h2')].find(el=>el.textContent.trim()==='Pengurusan');
  const section=heading?.parentElement?.parentElement?.parentElement;
  const cards=keys.map(key=>section?.querySelector('a[data-path="'+key+'"]')).filter(Boolean);
+ cards.forEach(card=>{card.dataset.isManagementCard='true';});
  const fields=document.getElementById('admin-main-link-fields');
  if(!fields)return;
  names.forEach((name,i)=>{const label=document.createElement('label');label.className='text-sm font-bold';label.textContent=name;
@@ -744,4 +754,3 @@ main > div.flex.flex-col.w-full.pb-8 > * {
 })();
 </script>
 </body></html>
-
