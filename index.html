@@ -703,11 +703,10 @@ main > div.flex.flex-col.w-full.pb-8 > * {
  const fallback=['https://www.moe.gov.my/laman-utama','https://www.moe.gov.my/laman-utama','https://apdm.moe.gov.my/','https://pajsk.moe.gov.my/index.php'];
  // Pilih kad hanya dalam seksyen Pengurusan; menu navigasi bawah tidak disentuh.
  const heading=[...document.querySelectorAll('h2')].find(el=>el.textContent.trim()==='Pengurusan');
- const section=heading?.parentElement?.parentElement;
- const mainGrid=section?.querySelector(':scope > .grid');
- const cards=keys.map(key=>mainGrid?.querySelector('a[data-path="'+key+'"]')).filter(Boolean);
+ const section=heading?.parentElement?.parentElement?.parentElement;
+ const cards=keys.map(key=>section?.querySelector('a[data-path="'+key+'"]')).filter(Boolean);
  const fields=document.getElementById('admin-main-link-fields');
- if(!fields||cards.length!==4)return;
+ if(!fields)return;
  names.forEach((name,i)=>{const label=document.createElement('label');label.className='text-sm font-bold';label.textContent=name;
   const input=document.createElement('input');input.type='url';input.id='admin-main-link-'+i;input.className='admin-field';input.placeholder='https://...';input.dataset.key=keys[i];
   const wrap=document.createElement('div');wrap.append(label,input);fields.append(wrap)});
@@ -745,3 +744,4 @@ main > div.flex.flex-col.w-full.pb-8 > * {
 })();
 </script>
 </body></html>
+
