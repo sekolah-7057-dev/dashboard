@@ -701,9 +701,8 @@ main > div.flex.flex-col.w-full.pb-8 > * {
  const keys=['pentadbiran','kurikulum','hem','kokurikulum'];
  const names=['Pentadbiran Pengurusan Am','Kurikulum Akademik & e-RPH','Hal Ehwal Murid APDM & Kebajikan','Kokurikulum PAJSK & Sukan'];
  const fallback=['https://www.moe.gov.my/laman-utama','https://www.moe.gov.my/laman-utama','https://apdm.moe.gov.my/','https://pajsk.moe.gov.my/index.php'];
- const mainHeading=[...document.querySelectorAll('h2')].find(el=>el.textContent.trim()==='Pengurusan');
- const cardWrap=mainHeading?.parentElement?.parentElement?.querySelector('.grid');
- const cards=cardWrap?[...cardWrap.querySelectorAll('a')]:[];
+ // Kenal pasti empat kad utama secara terus; tidak menyentuh navigasi bawah.
+ const cards=keys.map(key=>document.querySelector('a[data-path="'+key+'"]')).filter(Boolean);
  const fields=document.getElementById('admin-main-link-fields');
  if(!fields||cards.length!==4)return;
  names.forEach((name,i)=>{const label=document.createElement('label');label.className='text-sm font-bold';label.textContent=name;
